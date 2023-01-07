@@ -1,0 +1,28 @@
+<h1>form에 들어가는 요소들</h1>
+&lt;form&gt; : 입력값을 받는 영역(form)을 지정. 여러개의 영역은 가능하지만, 영역 안에 영역은 안된다.<br>
+&lt;<a href="input.html">input</a>&gt; : 입력값 요소(input)을 지정. type에 따라 다른 입력값을 보인다. <input type="text" placeholder="글을 입력하시오."><br>
+&lt;textarea&gt; : 여러 줄의 문자열 값을 받는다. <textarea name="" id="" cols="30" rows="2" placeholder="글을 입력하시오."></textarea><br>
+&lt;button&gt; : input의 button과 동일하다. 태그 내에서 HTML 지정이 가능해서 표현 폭이 넓다. <button>안녕</button><br>
+&lt;datalist&gt; : 검색어에 들어갈 목록을 지정한다.
+<input list="number" id="number-choice" name="number-choice">
+<datalist id="number">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+</datalist><br>
+&lt;select&gt; : 선택 목록 (하위 목록)
+<select name="number-list" id="number-list">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+</select><br>
+&lt;fieldset&gt; : 폼에 있는 요소를 그룹으로 묶어준다. 사각형 박스에 가둠.<br>
+&lt;legend&gt; : fieldset으로 묶어준 그룹에 제목을 지정하여 사각형 박스에 표기됨
+<fieldset>
+    <legend>과일(legend)</legend>
+    사과<br>
+    포도<br>
+    딸기
+</fieldset><br>
+&lt;label&gt; : 해당 요소의 이름을 지정한다. 이름을 클릭해도 요소가 선택됨.<br>
+<input type="checkbox" id="test"><label for="test">클릭해보세요</label>
