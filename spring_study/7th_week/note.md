@@ -30,7 +30,6 @@ OrderServiceImpl에서 먼저 회원데이터베이스, 할인정책을 구현�
 
 ### 주문과 할인 도메인 실행과 테스트  
 메인, 테스트 둘다 테스트 해본 결과 문제 없이 잘 구현되었다.  
-<hr>  
 ![image1](https://user-images.githubusercontent.com/108540812/217837600-9dbbcc53-f6b8-4549-a381-35e449c22a7f.png)  
 
 ## 섹션3  
