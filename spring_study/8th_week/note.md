@@ -49,6 +49,29 @@ ApplicatinContext는 BeanFactory도 받지만 그 외에도 여러가지의 부�
 메세지소스로 국제화기능, 환경변수, 애플리케이션이벤트, 편리한리소스조회...  
 즉, ApplicationContext는 빈 관리 기능 + 부가기능 인 것이다.  
 
-### 
+### XML로 설정하는 방법  
+스프링 컨테이너는 유연하다. 다양한 형식의 설정 정보를 받아들일 수 있다.  
+ApplicationContext를 AppConfig.class로 구현했었는데, 자바 코드가 아닌 xml로도 설정 정보로 구현할 수 있다. 임의로 구현도 가능  
+즉, appconfig.xml의 형태도 가능하다는 것이다.  
+그냥 new AnnotationConfigApplicationContext("AppConfig.class") 한 것 처럼 new GenericXmlApplicationContext("appConfig.xml)로 설정하면 된다.  
+이후 xml파일을 생성해서 AppConfig.class를 설정했던 것 처럼 만든다.  
+태그를 사용해서 bean을 등록하는 것과, 자바코드에서 @Bean을 사용한 것 둘 다 완벽히 똑같이 구현된다.  
+xml기반이라 하더라도 인터페이스는 ApplicationContext를 상속받는다!  
+빈이랑 똑같으니까 꼭 xml를 몰라도 된다. 스프링이 얼마나 유연한가를 보여주는 예시이다.  
 
-## 섹션5
+### BeanDefinition은 무엇일까 - 스프링 빈 설정 메타정보  
+스프링의 설정 형식의 중심에는 BeanDefinition이라는 추상화가 존재한다.  
+스프링 컨테이너는 자바 코드인지, xml인지 상관 없고 오직 BeanDefinition만 알면 된다.  
+스프링 컨테이너는 이 메타 정보를 기반으로 스프링 빈을 생성한다.  
+역할과 구현을 개념적으로 나눈 것이다.  
+ApplicationContext를 구현한 Annotation...Context는 DefinitionReader를 사용하여 설정 정보를 읽고 빈 메타정보를 생성해낸다.  
+xml도 마찬가지, GenericXml...Context도 XmlBeanDefinitionReader가 존재한다. 이것이 설정 정보를 읽어 빈을 생성한다.  
+beandefinition을 직접 생성하여 컨테이너에 등록할 수도 있는데 하지만 실무에서 이럴일은 거의 없다.  
+그냥 BeanDefinition으로 추상화하여 스프링이 다양한 설정 정보를 사용한다는 것만 이해하면 된다.  
+가끔 스프링코드나 오픈코드를 볼 때 BeanDefinition이라는 것이 보일 때가 있는데 위에서 말한 것처럼 이해하면 된다.(직접 등록하기도 함)  
+테스트 코드에서 ApplicationContext로 안하고 그 하위 애들로 불러왔는데, ApplicationContext에는 getBeanDefinition기능은 없기 때문이다. 이는 실제로 쓸일 별로 없다는 걸 간접적으로 보여줌  
+지금까진 빈을 직접 등록했는데 AppConfig 기능을 통해 직접 자바 코드를 넣고 연결시켜주는 방식을 팩토리메소드라고 한다.  
+외부에서 메소드를 호출해서 생성하는 방식  
+
+## 섹션5  
+### 
