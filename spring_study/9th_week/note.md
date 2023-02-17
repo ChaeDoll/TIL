@@ -20,8 +20,19 @@ Configuration도 Component로 등록되어 있어서 필터 기능으로 예외�
 @Autowired를 사용해 의존관계를 지정하는 방법은, 먼저 @Autowired를 생성자에 지정되면, 그 생성자의 매개변수(타입)를 갖는 스프링빈을 찾아서 주입시킨다.  
 그럼 같은 타입이 여러개면? -> 충돌이 날 것이다. 이후 자세하게 설명  
 getBean(MemberRepository.class)를 사용하는 것과 동일하다고 이해하면 된다.  
+매개변수가 여러개인 것은 문제가 없다. 다 찾아준다. 하지만 같은 타입이 여러개 발생하면 그게 문제인 것이다. 제대로 구분하길!  
+사실, 모든 자바 클래스를 탐색하면 시간이 꽤나 걸릴 것이다. 따라서 컴포넌트 범위를 설정할 수도 있다.  
+@ComponentScan 뒤에 괄호를 사용하여 basePackages = "hello.core"과 같은 형태의 코드를 작성하면 시작 탐색 위치가 hello.core부터 시작된다.  
+시작 위치를 여러개 지정할 수도 있다. 지정하지 않으면 @ComponentScan이 적힌 클래스가 존재하는 패키지가 시작위치가된다.  
+시작위치를 설정하는 것도 좋지만, 사실 설정 정보 클래스를 최상단에 두는 것을 더 많이 쓰는 듯 하다.  
+스캔 대상은 @Component 뿐만 아니라 @Controller @Service @Repository @Configuration 이 모든 것들이 스캔 대상이다. @interface 에 Controller, Service ...등이 인터페이스로 존재하고 그것들이 Component 등록이 되어있는 소스코드가 내포되어 있다.  
+컴포넌트 스캔 필터로 excludeFilters를 썼었는데 includeFilters라는 것도 존재한다.  
+필터타입은 5가지가 있는데 ANNOTATION(기본값, 어노테이션), ASSIGNABLE_TYPE(지정한 타입과 그 자식타입), ASPECTJ(AspectJ 패턴), REGEX(정규 표현식), CUSTOM(TypeFilter라는 인터페이스 구현하여 처리)가 있다.  
+includeFilters는 잘 사용안하고 excludeFilters는 가끔 쓸일이 있지만 자주쓰진 않는다.  
 
+컴포넌트 스캔으로 이름이 같은 빈을 받으면 오류가 난다. 수동빈과 자동빈을 선언하면 수동빈이 우선권을 가지고 자동빈을 오버라이딩 해버린다.  
 
 
 ## 섹션7  
 ### 의존관계 자동 주입  
+의존관계 주입은 생성자 주입, 수정자 주입(setter), 필드 주입, 일반 메소드 주입 크게 4가지가 있다.  
