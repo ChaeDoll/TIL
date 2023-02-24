@@ -13,6 +13,7 @@
 - @Autowired 필드 명을 사용하여 매칭  
 - @Qualifier 끼리 매칭  
 - @Primary 사용  
+
 우선 @Autowired의 필드명이란 무엇이냐면, 아예 Autowired를 사용하는 메소드 매개변수를 원하는 대상 타입->필드명 을 사용하는 것이다.  
 기존에 타입을 DiscountPolicy discountPolicy의 형태처럼 작성했다면,  
 DiscountPolicy rateDiscountPolicy 처럼 아예 원하는 필드명을 지정하면 이를 해결할 수 있다.  
