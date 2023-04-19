@@ -440,6 +440,86 @@ class 클래스명(val a:String="", val b:Int=0) {}
 
 
 ## 3장  
+### 안드로이드 스튜디오  
+모든 Activity에서 onCreate()를 재정의 해야한다.  
+그래서 Activity 생성하면 기본적으로  
+override fun onCreate(saved.....) {  
+    super.onCreate(saved....)  
+}  
+onCreate()메소드가 자동으로 만들어진다.  
+
+화면에 무언가 띄우기 위해 우리는 layout을 필요로한다.  
+
+Design모드에서는 어떻게 화면이 보이는지 볼 수 있고, TextMode에서는 xml파일로 레이아웃을 편집할 수 있다.  
+
+layout에서는 orientation 속성이  
+horizontal 이냐 vertical이냐에 따라 위젯들의 나열 방향이 결정된다.  
+horizontal은 기본값(default)로 가로배치이다.(좌에서 우로)  
+vertical로 설정하면 위젯이 세로로 나열된다. (위에서 아래로)  
+
+id 속성은 위젯의 고유ID를 부여하는것이다.  
+@+id/id_name을 사용하여 다른 xml 파일에서 이 id_name을 갖는 위젯을 참조할 수 있다.  
+
+match_parent는 레이아웃 크기에 맞춘다.  
+wrap_content는 콘텐츠의 크기에 맞게 변하는 사이즈이다.  
+버튼같은 콘텐츠는 Text 속성으로 내부에 Text를 넣을 수 있다.  
+
+이렇게 layout을 만들었다면 onCreate()된 Activity를 화면에 보여줘야한다.  
+setContentView(R.layout.레이아웃명)을 사용하여 레이아웃의 컨텐츠들을 화면에 띄워준다. R을 사용하여 레이아웃 주소의 id를 가져올 수 있다. 여기의 id는 위에서 설정한것  
+
+### AndroidManifest  
+이 파일에서는 앱의 이름을 설정하거나 초기 intent-filter태그를 사용하여 Activity를 설정하거나 할 수 있다.  
+intent-filter를 사용하면 android:exported를 true로 해야한다  
+이 속성은 다른 앱에서 Activity에 접근할 수 있는지 없는지를 나타내는데, 홈화면 혹은 다른앱에서 런쳐로 설정한 Activity를 실행하려는데 접근못하면 못열겠지?  
+false로 하면 같은 앱 내에서 이동은 가능  
+
+### 버튼 활용  
+레이아웃에 등록된 기능 중, 버튼같이 상호작용이 필요한 경우 변수를 선언하여 동작을 넣을 수 있다.  
+그를 위해 findViewById(R.id.레이아웃id)가 필요하기도 하고  
+버튼의 경우 동작을 위해 먼저 버튼을 선언하여 findViewById를 해준뒤,  
+Button 객체 메소드인 setOnClickListener를 사용하여 버튼을 눌렀을 때 onClick()메소드가 동작하는 메소드를 만들 수 있다.  
+따라서 동작할 메소드는 onClick()에 기입하면 됨  
+
+### 토스트메세지
+Toast.makeText()로 메세지를 만들고 .show()로 화면에 토스트메세지를 띄울수있음  
+makeText메소드는 context, "message", message_time 이렇게 3개의 인자를 필요로한다.  
+
+### 메뉴  
+앱을 보면 menu기능이 있는데, res파일에 menu폴더를 만들고 그 안에 main.xml을 만든뒤 menu태그와 함께 item들을 추가하여 메뉴들을 만든다.  
+Activity에서 onCreateOptionMenu()를 오버라이드하여 menuInflater.inflate로 불러와주면 된다.  
+
+### inflate  
+Inflater 객체들은 inflate()메소드를 사용할 수 있다. 인스턴스를 가져와 생성하는 기능인데,  
+menu inflate에선 2개의 매개변수를 사용한다.  
+리소스파일(R.menu.main), onCreateOpt...()메소드 인자로 들어온 메뉴 인수  
+마지막으로 값을 true로 반환하면 메뉴가 표시되고 false하면 메뉴가 안보인다.  
+
+메뉴 표시가 되었으면 기능도 추가해야 한다.  
+onOptionItemSelected 메소드를 오버라이드하여 위에서 들어온 메뉴아이템을 받아 when함수 같은걸 사용하여 id를 확인하고 메소드를 실행시키는 등 여러 활용 가능하다.  
+얘도 마찬가지로 return값으로 표시/비표시를 나타낸다.  
+
+### Activity 삭제  
+Activity는 기본적으로 뒤로가기하면 현재Activity가 지워질것이다.  
+근데 뒤로가기버튼을 안써도 finish()메소드를 사용하면 Activity를 종료할 수 있다.  
+
+### Activity 간 상호작용  
+Intent를 사용하면 다른 Activity들 끼리 상호작용이 가능하다.  
+Intent를 사용하여 Activity를 시작하거나 Service를 시작하거나 Broadcast를 시작하는 등 가능  
+
+명시적, 암시적 Intent 두 유형이 있다.  
+명시적인 경우엔  
+Intent(패키지context, class명)으로 호출가능  
+예를들어 val intent = Intent(this, SecondActivity::class.java)를 하고,  
+startActivity(intent)를 사용하여 Activity를 시작하면  
+intent 변수에 저장된 SecondActivity가 시작한다.  
+
+이렇게 명시적으로 나타낸경우 말고, 암시적으로 나타낸다면 AndroidMenifest를 사용하여 가능하다.  
+intent-filter를 걸고 action태그에 임의로 name을 지정하고 category name도 지정한뒤,  
+val intent = Intent("com.example....actionname")을 Intent처럼 사용하고 startActivity(intent)로 시작  
+
+
+
+
 
 
 
