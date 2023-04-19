@@ -478,7 +478,9 @@ false로 하면 같은 앱 내에서 이동은 가능
 그를 위해 findViewById(R.id.레이아웃id)가 필요하기도 하고  
 버튼의 경우 동작을 위해 먼저 버튼을 선언하여 findViewById를 해준뒤,  
 Button 객체 메소드인 setOnClickListener를 사용하여 버튼을 눌렀을 때 onClick()메소드가 동작하는 메소드를 만들 수 있다.  
-따라서 동작할 메소드는 onClick()에 기입하면 됨  
+따라서 동작할 메소드는 onClick()에 기입하면 되는데... 보통 람다식으로 넣는듯..?  
++추가 : Activity에 View.OnClickListener 넣으니까 onClick메소드 재정의해줘야함  
+그리고 여기에 적은 메소드들이 setOnClickListener에 반응하여 실행됨.
 
 ### 토스트메세지
 Toast.makeText()로 메세지를 만들고 .show()로 화면에 토스트메세지를 띄울수있음  
@@ -513,14 +515,320 @@ Intent(패키지context, class명)으로 호출가능
 startActivity(intent)를 사용하여 Activity를 시작하면  
 intent 변수에 저장된 SecondActivity가 시작한다.  
 
-이렇게 명시적으로 나타낸경우 말고, 암시적으로 나타낸다면 AndroidMenifest를 사용하여 가능하다.  
+이렇게 명시적으로 나타낸경우 말고, 암시적으로 나타낸다면 AndroidManifest를 사용하여 가능하다.  
 intent-filter를 걸고 action태그에 임의로 name을 지정하고 category name도 지정한뒤,  
 val intent = Intent("com.example....actionname")을 Intent처럼 사용하고 startActivity(intent)로 시작  
 
+category를 DEFAULT로 설정되있는건 startActivity()가 실행될때 즉시 intent instance로 추가됨  
+각 Intent는 하나의 action만 할 수 있지만 category는 여러개 가질수있음.  
+addCategory("카테고리명")으로 Menifest에 있는 또다른 카테고리를 가져올 수 있다.  
 
+### 암시적 Intent ...  
+암시적Intent 사용하면 앱 내부 아니여도 다른앱 활동도 사용 가능하다.  
+웹 표시도 val intent = Intent(Intent.ACTION_VIEW) 하고  
+intent.data = Uri.parse("주소") 한뒤 Activity를 start하면 가능.  
+uri = {url, urn} 을 의미  
 
+버튼을 눌러 웹 사이트로 연결하기 위한 방법도 있다.  
+새 Activity에서 intent-filter로 tools:ignore="AppLinkUrlError"을 속성에 넣고  
+그 안에 action은 android.intent.action.VIEW 그리고 data태그로 scheme="https"를 해주면 된다.  
 
+### Activity 데이터 전달  
+putExtra 기능으로 ("변수명", data) data를 intent에 넣고 다른 activity에 옮길수있다.  
 
+전달한 것을 가져오기위해 다른 Activity에서는  
+val 변수명2 = intent.get타입Extra("변수명")처럼 사용가능  
+
+### 마지막 Activity로 Data 돌려보내기  
+startActivityForResult(Intent, requestCode) 메소드 사용하여 이전 활동으로 복귀  
+원리는 putExtra로 데이터를 setResult()해서 intent를 반환하고  
+이전 Activity에서 onActivityResult 메소드를 오버라이딩하여 intent를 반환받는다.  
+
+우리가 뒤로가기 버튼을 눌렀을때 실행되는것도 오버라이딩 가능하다. onBackPressed()메소드가 바로 그것이다.  
+
+### Activity 생명주기  
+백스택. 작업들은 스택처럼 쌓이고 추가되는 애들은 스택 맨 위에 배치됨  
+뒤로가기나 finish()실행하면 맨 위의 작업이 pop되고 그 아래있던게 스택의 맨 위가 된다.  
+
+활동 상태는 크게
+Running, Paused, Stopped, Destroyed  
+이렇게 네 가지 있다.  
+백스택의 맨 위에 있고 실행중인 상태가 <b>Running</b>이다.  
+Activity가 맨 위에 존재하지는 않지만 아직 화면에 표시되고 있으면 <b>Paused</b> 상태이다. 화면 일부만 차지하는 TextBox같은게 그 예시이다. 계속 표시되기에 언제든 Activity를 재사용 가능하다. 다만 메모리 너무 부족하면 상태를 정리하려함  
+만약 Stack이 맨 위에 있지도 않고 사용자에게 보이지도 않는 상태면 <b>Stopped</b> 상태이다. Activity의 상태와 변수는 유지하지만 메모리 부족으로 인해 정리될 수 있다.  
+Activity가 완전히 Stack에서 Pop되어 파괴된 상태를 <b>Destroyed</b>라고 한다. 시스템에선 다른 앱을 쓰기 위한 메모리 확보로 
+Destroyed 상태의 activity를 정리하도록 하는것이 바람직하다. 
+
+Activity의 생명주기마다 실행할 수 있는 콜백메소드가 존재한다.  
+onCreate(), onStart(), onResume(), onPaused(), onStop(), onDestroy(), onRestart() 이렇게 존재한다.  
+각 메소드들마다 Log를 배치하여 어느 시점에 저 생명주기들이 불려지는지 확인할 수 있다.  
+onCreate()는 초기화될때, onStart()는 활동이 화면에 보일때, onResume()은 스택 맨위에 있고 상호작용가능한 준비가되어 실행중일때, onPaused()는 다른 Activity가 시작되거나 재개되어 화면상에만 띄워져있을 경우, onStop()은 다른 활동에 의해 활동이 보이지않는 경우(대화상자같은경우로 인해서는 onPaused()가 호출됨), 활동소멸바로 직전에 onDestroy(), 활동 중지에서 실행으로 상태 바뀔때 onRestart()  
+
+생성과 소멸은 onCreate(), onDestroy()  
+사용자 화면에 보이는건 onStart()와 onStop()  
+사용자와 상호작용 가능한건 onResume()과 onPaused()  
+
+### 대화 TextBox처럼 띄우는 Activity  
+AndroidManifest에서 Activity의 theme를 Theme.AppCompat.Dialog 식으로 바꾸면,  
+Dialog식 Activity로 전환된다.  
+
+### Activity 재활용 (정리)  
+Acitivity가 Stop상태가 되면 Recycle할 수 있다.  
+Activity_1에서 Activity_2를 실행하고 1이 Stop상태가 되었는데 만약 메모리가 부족하면 1은 Recycle되어버릴 것이다.  
+메모리가 부족하지 않았다면 onRestart() 되겠지만, 만약 정리되었다면 Destroyed된 것이나 다름없기에 onCreate가 다시 호출될 것이다.  
+
+이 자체는 문제 없어보이지만, Activity_1에 만약 입력해둔 데이터가 있다면 사라질 것이다.  
+이를 저장하기 위해 onSaveInstanceState()가 존재한다.  
+onCreate()메소드에 Bundle?타입으로 기본적으로 들어가는걸 볼 수 있다.  
+
+onSave...메소드에 put타입("변수명", 데이터값)으로 데이터 저장하고  
+onCreate()메소드 내에 있는 saveInstance....를 활용한다.  
+기본적으로 null값이 들어가고 있었겠지만 만약 우리가 onSave...()메소드를 오버라이딩하여 put타입으로 값을 넣었다면 그 값을 get타입("변수명")으로 가져올 수 있게된다.  
+
+이 방법은 Intent에서 데이터 가져오는 것과 매우 유사  
+화면 회전할때도 데이터가 손실되는데 이건 다른방법으로 해결하겠음...(추후 알려줌)  
+
+### Activity의 실행모드 (Launch Mode)  
+AndroidManifest에서 activity의 launchmode를 변경할 수 있다.  
+크게 standard, singleTop, singleTask, singleInstance 이렇게 네 모드가 있다.  
+- Standard(표준) : 우리가 지금까지 구현할 활동들.  
+백스택을 활용하여 활동을 관리하고 새 활동 시작하면 스택의 맨 위로 올라간다. Activity가 시작할때 새 instance가 생성된다.  
+Standard의 경우엔 Activity를 시작할 때마다 새로운 instance가 생성되어 FirstActivity타입으로 여러 instance가 생성될 수 있다. 그러면 스택엔 FirstActivity가 여러개 쌓이는것이다.  
+- singleTop : 스택 맨 위에 이미 Activity instance가 존재하면 새 인스턴스를 만들지 않고 기존 instance를 사용하는 방법이다.  
+먼저 AndroidManifest의 activity:launchMode를 singleTop으로 변경  
+여러번 Activity를 시작해도 하나의 instance만 스택 맨 위에 존재한다.  
+다만... 만약 다른 Activity가 스택의 맨 위에 존재할때는 Standard처럼 새로운 instance를 생성한다.  
+- singleTask : 하나의 Activity instance만 허용하고 싶다면 이 방법을 사용한다.  
+이 방법은 실행될때마다 시스템에 백스택에 Activity instance가 존재하면 전부! 모두 pop하고 이 instance를 재사용하는 방법이다.  
+- singleInstance : 가장 복잡한 모드이다.  
+시스템은 이 활동 관리를 위해 새로운 백스택을 만든다. 이 새로운 백스택은 공유됨  
+실제로 taskId를 비교하면 singleInstance를 사용한 Activity만 다른 taskId를 가짐  
+
+### 현재 Activity 확인?  
+기존에 우리가 Activity들에 상속하는 AppCompatActivity()도 새롭게 다른 클래스로 만들 수 있다.  
+예를들어 BaseActivity()라는 클래스를 만들고 AppCompatActivity()를 상속받은뒤,  
+입맛에 맞게 메소드들을 재정의하고 AppCom...대신 BaseActivity()를 상속받으면,  
+기존 AppCom...에서 사용하는 기능과 더불어 새롭에 우리가 추가한 메소드들도 사용할 수 있다.  
+
+물론 Activity들에 상속받아 가져오는 BaseActivity()에서 재정의한 내용보다  
+따로 Activity들에서 재정의하는게 우선적으로 사용된다. (자식의 재정의가 우선)  
+참고로 BaseActivity는 open형으로 만들어야 상속이 가능하다는 점 잊지 않길.  
+
+### 어디서나 앱 종료  
+앱 종료를 어디에서나 하고싶다? 뒤로가기 여러번해서 앱 종료하기 싫다?  
+모든 활동을 참조하는 컨트롤러를 만들어서 앱들의 Activity들을 통괄하여 관리할 수 있다.  
+singleton을 사용하여 가능한데,  
+우리는 object라는 기능으로 이것을 가능캐한다.  
+
+singleton이기에 어디에서나 전역적으로 사용가능하고, object에서 정의한 메소드에서 Activity를 받아 List로 정렬하고 이곳에 Activity들을 추가하고 제거하도록 코드를 작성하면 Activity들을 한번에 관리가능하다.  
+
+이렇게 모든 Activity를 받을 수 있는 object(싱글톤)을 만들고 BaseActivity() onCreate()에 포함시키면 모든 Activity들이 object를 사용 가능할 것이다.  
+
+### Activity를 시작하는 다른 방법들...  
+intent를 만들거나 startActivity()나 startActivityForResult()와 같은 방법을 통해 여러 방법으로 Activity를 시작하곤 했다.  
+intent값을 전달받아 startActivity()에 넣을수도 있고...  
+
+object는 클래스 전체가 하나의 싱글톤객체,  
+companion object는 클래스 내에 일부분이 싱글톤 객체로 선언.  
+인자값을 받아서 intent 전달을 도우면서 Activity 시작까지 안에 만들어놓으면..  
+우린 companion object에 있는 이 메소드를 실행시키는 것만으로도 새로운 Activity를 intent값과 함께 시작할 수 있다.  
+
+### with, run, apply  
+with(객체()) {객체명.메소드를 생략가능..  
+메소드()  
+메소드()  
+}  
+이렇게 가능하다.. 반복사용을 막음  
+
+run은 with와 유사. 구문만 다름  
+대신 직접호출이 안되어 obj.run처럼 실행함수를 호출해야한다.  
+val result = StringBuilder().run {...}  
+
+apply는 객체에 적용되는건 run과 유사한데,  
+<b>객체 자체만</b> 반환한다. 따라서 대입되는 값은 obj이다.  
+val result = StringBuilder().apply {...}  
+하면 result에 들어간 값은 무조건 람다식 내의 메소드들이 apply가 된 StringBuilder() 객체이다.  
+따라서 with나 run은 람다식 내에 toString()이 있으면 result에 toString()값이 들어갔겠지만,  
+apply는 result에 반환된 object를 활용하여 result.toString()처럼 직접 사용해야한다.  
+
+### 정적 메소드 정의 static method  
+자바에서 public static void a(){}  
+이런 방식으로 정적 메소드 선언을 했었다.  
+Kotlin에서는 object를 사용하여 전역에서 사용가능한 정적클래스 혹은 메소드를 선언할 수 있다.  
+일반 클래스에서 메소드만 정적으로 쓰고싶다면 메소드 내부에 companion object를 사용하면 된다.  
+정적메소드로 선언되지않은건 클래스가 생성되고나서야 메소드 사용이 가능한데, 클래스 내부에 companion object가 선언되어있으면 클래스명.메소드명()으로 바로 사용가능하다.(syntax sugar때매)  
+
+싱글톤이나 companion object 메소드에 @JvmStatic 애노테이션 추가하면 Kotlin컴파일러가 이걸 실제 정적메소드로 컴파일한다. *단 싱글톤이나 companion object메소드만 애노테이션 적용가능*  
+이렇게 실제 정적메소드가 되면 java랑 kotlin모두 클래스명.메소드명()으로 companion object를 부를수있다.  
+
+패키지에 함수를 넣고 패키지를 호출하여(import) 사용하게 하는방법도 있다.
+패키지명.메소드명() 가능?  
 
 
 ## 4장  
+### UI  
+레이아웃을 활용하여 UI를 만들 수 있다.  
+ConstraintLayout이라는거 최근에 생기긴했는데 수동코딩에 적합하진 않음. 대신 visual editor에서 드래그앤드롭으로 쉽고 개발가능    
+
+layout_width와 layout_height 속성으로 레이아웃 크기를 지정할 수 있다.  
+이 값들은 match_parent, wrap_content, 고정값 이렇게 3가지 가능  
+고정값으로 할 때는 dp로 입력한다.  
+dp가 display에 크기에 맞게 조정돼서 다양한 휴대폰 해상도에 잘 적응됨  
+
+Layout에는 위젯들을 추가하여 다양한 기능을 화면에 표시가능  
+텍스트 표시는 TextView태그, 버튼은 Button태그 등...  
+gravity 속성을 통해 위젯 내의 값들의 위치를 조정할 수 있다.  
+center하면 중앙정렬, top은 위, bottom은 아래, start는 기초인가..?, end는 젤 오른쪽아래..? 기호 ('|')를 써서 여러 정렬을 함께 사용할 수도 있다. 예를들어 화면 정중앙에 넣고싶으면 center_vertical|center_horizontal 처럼? (근데 center가 이거 두개 다 정렬한 역할임)
+layout_gravity를 쓰면 Layout에서의 위치 조정가능  
+
+Text를 사용하는 <b>TextView</b>의 경우엔 textColor이나 textSize같은 속성도 있다.  
+Button 태그에는 text속성으로 버튼내에 적힐 글자를 넣을 수 있다.  
+
+<b>Button</b>의 경우에 Activity에 View.OnClickListener 구현받고 onClick()메소드 구현하면 메소드 내의 코드가 setOnClickListener이 실행될때 반응함  
+
+<b>EditText</b>라는 위젯은 사용자가 입력할 수 있는 텍스트입력창을 만들 수 있다.  
+hint 속성으로 아무것도 입력되지 않았을 때 보이는 글자를 표시할 수 있다.  
+만약 height를 wrap_content로 해둘때 생기는 문제는, 글자가 여러개 써서 여러줄이 되면 점점 크기가 늘어난다는 단점이 있다.  
+그래서 maxLines를 설정하여 과하게 칸이 늘어나는것 방지 가능하다.  
+
+버튼 위젯과 함께 사용하여 버튼을 눌렀을 때 editText에 적힌 글자를 toString()하여 변수에 넣고, 그 변수를 Toast.makeText().show()하여 토스트메세지로 출력할 수 있다.  
+editText.text에 getText와 setText가 들어가있음.  
+
+<b>ImageView</b>는 UI에 이미지를 표시할 때 사용한다.  
+res폴더 내에 drawable폴더가 있는데, 이 안에 이미지들을 넣어 사용한다.  
+대부분 휴대폰은 해상도가 xxhdpi거나 더 높기때문에 drawable-xxhdpi 처럼 폴더를 직접 생성해주어야한다.  
+이렇게 drawable폴더를 만들고 img파일을 집어넣었다면, ImageView태그 속성에 src를 통해 @drawable/사진명 을 기입한다.  
+Activity파일에서 imageView객체에 .setImageResource(R.drawable.사진명2)를 하여  
+다른 이미지로 설정할 수도 있다.  
+
+<b>ProgressBar</b>는 진행상태를 나타내는 위젯이다.  
+기본값으로 동글동글 돌아가는 형태인데,  
+style속성을 변경하여 다른 형태로 바꿀수도 있다. style="?android:attr/progressBarStyleHorizontal"  
+만약 막대 progressBar에 max속성을 추가하면 0부터 max값까지의 단계를 갖는 위젯이 된다.  
+progress위젯은 visibility 속성을 사용하여 숨기거나 나타내거나 할 수 있는데, 기본값은 visible(보임)이다.  
+Activity 코틀린 코드로도 visibility의 상태를 바꿀수있는데, View.VISIBLE 혹은 View.INVISIBLE 그리고 View.GONE으로 변경할 수 있다.  
+setVisibility() 메소드로 변경할 수도 있고, 직접 객체명.visibility를 값변경 할 수도 있다.  
+
+<b>AlertDialog</b>는 Dialog팝업창 위젯이다.  
+Activity위에 일정크기로 나타난다.  
+매우 중요메세지나 위험메세지를 나타낼때 쓴다.  
+정말 중요한 파일을 지울때 확인하는 용도로 쓰이곤 한다.  
+apply구문을 사용하여 AlertDialog객체의 Builder()객체를 사용할수도 있다.  
+AlertDialog.Builder(this).apply{...}  
+저 식 내부엔 setTitle(), setMessage(), setCancelable[뒤로가기로 취소가능한지 true or false], setPositiveButton("메세지"){dialog, which  -> 목적지함수}  
+setNegativeButton("메세지"){dialog, which -> 목적지함수}  
+show()
+이런 식들을 통해 바로 설정가능. 두개의 버튼으로 어떤행동이 취해질지는 따로 설정해야함  
+
+### 기본 레이아웃들  
+레이아웃은 위젯배치를 위해 있는 컨테이너(Container)이다. 레이아웃 내에 레이아웃을 임베디드 할 수 있다. 위젯은 레이아웃 내에 있을 수 있다.  
+즉, 레이아웃 끼리도 포함 가능하고, 레이아웃은 위젯을 포함할수 있다.  
+대표적인 Layout들을 여기서 소개한다.
+- LinearLayout : 일반적으로 사용하는 레이아웃. 내부에 위젯을 세로or가로로 배치.  
+orientation속성을 통해 horizontal(가로) 혹은 vertical(세로)로 방향설정 할 수 있다.  
+내부에 추가되는 레이아웃들은 여기서 설정한 방향에 맞게 정렬된다.  
+방향이 horizontal이면 width가 match_parent가 될 수 없다. 다른 위젯이 들어갈 수 없기에..  
+마찬가지로 vertical이면 height가 match_parent 불가능이다.  
+layout_gravity 속성은 레이아웃 속의 위젯들을 어떻게 정렬할지를 위해 사용한다.  
+따라서 orientation에 따라서 만약 가로정렬이면 다른 위젯들을 의식하여 가로쪽으론 정렬이 안된다. center정렬하면 가로위치는 같고 세로위치가 중앙정렬됨.  
+위젯 크기를 백분율로 설정하기 위해서 사용하는 weight 속성도 중요하다.  
+대신 이걸 쓰기 위해선 width를 0dp로 설정해야한다(vertical은 height를 0으로)  
+weight는 비율을 나타내는것이다.  
+- RelativeLayout : 상대적위치정렬을 사용하는 레이아웃이다.  
+layout_alignParentLeft="true"이런것처럼 위젯들 내부에서는 parent(레이아웃)을 기준으로 위치를 설정한다.  
+참조가능한 값들은 layout_alignParentLeft, layout_alignParentTop, layout_alignParentCenter 등..가능하다.  
+이처럼 Parent를 기준으로 위치설정도 가능하지만,  
+layout_above, layout_below, layout_toLeftOf 등과 같은 속성을 사용하여 다른 위젯 위치를 참조할 수도 있다. 참조방법은 "@id/위젯id" 이런식으로..  
+*주의* 위 예시처럼 위젯이 위젯을 참조하는 경우에는 참조받을 위젯을 먼저 선언해야한다. 그래야 id를 찾을수있으니까.  
+- FrameLayout : '모든' 위젯을 기본값으로 레이아웃 상단왼쪽 모서리에 배치하는 레이아웃이다.  
+구석에 다 몰아넣어놓고 정의되는 순서대로 차곡차곡 위로 쌓인다.  
+gravity값을 주어 정렬하는 레이아웃이다.  
+
+
+참고로 위젯들은 다 상속관계가 존재한다.  
+예를들어, View를 상속하는 TextView, ImageView, ViewGroup 세가지로 나뉘고,  
+TextView를 상속받는 EditText와 Button이 있다.  
+그리고 ViewGroup을 상속받는 LinearLayout과 RelativeLayout.. 이런식으로...  
+그래서 위젯마다 사용가능한 메소드들이나 속성이 조금씩 다른것이다.  
+이걸 이해한다면, 우리는 Customize된 위젯을 만들 수도 있다.  
+원하는 기능을 가진 상위계층 위젯을 상속받아서 새로운 위젯을 만들고, 그 위젯을 활용할 수 있다.  
+
+### 레이아웃 포함 include  
+레이아웃을 미리 만들어두고, 다른 레이아웃에서 이전에 만들어둔 레이아웃을 include시킬수도있다.  
+이 방식을 사용하면 어딜가든 기본적인 Layout을 포함시키면서 Layout을 설계할 수 있다.  
+include layout="@layout/title"태그로 title.xml이라는 이름으로 저장되어있는 layout 내용을 그대로 가져온다. import라 생각하면 편함  
+
+만약 Activity에 상위 nav바에 대한 내용이 있으면 supportActionBar?.hide()로 숨길 수 있다. [없을수도있으니 ?붙임]  
+
+### custom 위젯 만들기  
+class NewLayout(context:Context, attrs:AttributeSet):상속받을layout(context, attrs)  
+이렇게 class를 선언하고 그 안에 init을 통해  
+LayoutInflater.from(context).inflate(R.layout.title, this) 를 넣는다.  
+그러면 원하는 위젯들이 들어있는 새로운 레이아웃 기능을 그대로 끌어쓸 수 있다.  
+이렇게 만든 위젯들이 담긴 레이아웃을  
+우리가 쓸 Activity의 layout에서 com.example.프로젝트명.NewLayout 같은 태그를 통해 위젯처럼 추가하면 된다.  
+마치 레이아웃 내에 위젯을담은 레이아웃을 넣은 느낌?  
+
+전체이름이랑 패키지명을 넣어야하는점 빼면 시스템 위젯을 추가하는것과 똑같다!  
+Activity 안에서 위젯처럼 넣은 레이아웃 내의 위젯들을 맘대로 가져다 쓸 수 있다.  
+
+### ListView 위젯  
+ListView는 위젯을 추가하고 Activity내에서  
+listView.adapter = 리스트...  
+를 통해 리스트를 listView 위젯에 연결해주고  
+이를 화면에 보여주는 위젯이다.  
+여기서 list를 가져오는 방법이 중요?  
+ArrayAdapter<타입>()을 사용하여 리스트를 입력받아 특정 item이 담긴 list에 대한 layout에 입력받는것도 가능하다.  
+
+> Text로만 리스트 받는것도 가능하지만 ListView도 UI customize가 가능하다.  
+
+fruit_item이라는 xml 레이아웃을 만들고  
+그 안에서 ImageView와 TextView위젯을 추가한다.  
+그리고 ArrayAdapter을 상속받는 새로운 Adapter클래스를 만들고, getView를 오버라이딩하여 이미지와 텍스트 두가지를 모두 입력받아 view로 반환하는 메소드를 만든다.  
+
+이제 새롭게 정의한 fruitList에 Text와 사진파일을 모두 담고 새롭게 정의한 Adapter를 사용하여 목록으로 띄운다.  
+
+repeat(숫자)이라는 메소드는 숫자만큼 반복하는 메소드이다. 그냥 참고로..  
+
+### ListView 효율성의 최적화?  
+현재 방식은 스크롤할때마다 계속 불러오는 형태인데, if (convertView==null)일때만 생성하고, 그게아니면 view=convertView로 새로고침만 해주게하면 메모리 낭비를 막을 수 있다.  
+하지만 아직 getView()가 호출될때마다 findViewById()가 계속 호출된다.  
+이건 ViewHolder라는것을 사용하여 한번 호출된 이미지와 Text를 ViewHolder로 값을 잡아두고, view.tag에 저장한다.  
+그리고 갱신될때는 view.tag as ViewHolder를 사용해 viewHolder에 다시 넣어둔다.  
+
+### ListView활용  
+단순히 리스트만 보여주는게 아니라, listView를 클릭할때 이벤트가 생기도록 할 수도 있다.  
+setOnClick....을 사용하면 되는데,  
+parent, view, position, id값을 모두 받고 그거에 맞는 메소드를 실행시키는데,  
+우리는 position만 다르지 parent, view, id값은 모두 같기때문에 언더바를 사용하여 표현 가능하다.  
+_,_,position,_ -> 이렇게...  
+
+### RecyclerView  
+나름 최근 위젯중에 이런 위젯도 있다.  
+build.gradle에서 recyclerview에 관한거 구현해놓으면 모든 버전에서 사용가능  
+activity_main 레이아웃에 위젯으로 RecyclerView를 먼저 추가. 패키지 경로 완전한 이름으로 넣어야함.(시스템SDK에 없어서)  
+이것만으로 ListView의 이미지, fruit클래스, fruit_item.xml 재사용해서 중복작업줄임  
+
+FruitAdapter와 ViewHolder Recycler.Adapter<어댑터.ViewHolder>() 상속받고  
+안에 ViewHolder도 RecyclerView.ViewHolder(view)로 상속받고...  
+LinerLayoutManager(this)로 선언하고  
+recyclerView:RecyclerView=findVi..선언하고  
+recyclerView.layoutManager=layoutManager  
+val adapter = FruitAdapter(fruitList)  
+recyclerView.adapter = adapter  
+이런식으로...  
+
+RecyclerView는 가로 스크롤도 지원한다.  
+과일아이템 xml을 vertical로 변환하고  
+너비를 80dp로 사용..  
+imageView와 textView layout_gravity를 center_horizontal로 하고 layout_marginTop으로 여백 확보  
+나중에 Activity에서 layoutManager.orientation=LinearLayoutManager.HORIZONTAL  
+설정...  
+
+이 외에도 GridLayoutManager나 StaggeredGridLayoutManager도 있음.  
+
+대신 RecyclerView는 이벤트를 제공하지 않는다. 구현도 어렵다.  
+
+
+### 이미지 구축..?  
+
