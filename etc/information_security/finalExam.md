@@ -18,7 +18,6 @@
 - Availability (가용성) : 시스템이 항상 안정적으로 유지될 수 있는 것. 항상 사용가능하게 동작하도록 하는 것.  
 - 추가적으로... Authenticity (인증된), Accountability (뚫렸을 때 누구의 책임인가.. 책임추궁) 등  
 
-
 ### 보안 공격 (Security Attacks)  
 보안 공격에는 Passive attacks(수동적/소극적 공격)과 Active attacks(능동적/적극적 공격)이 있다.  
 보안에서는 기본적으로 통신채널이 언제든 도청 당할 수 있음을 가정한다.  
@@ -31,10 +30,14 @@
 - Release of message contents : 중간에 도청하여 메세지 내용을 보는 공격  
 - Traffic analysis (트래픽 분석) : 암호를 걸어서 메세지를 볼 수 없더라 해도, 네트워크 통신을 주고 받은 빈도수 혹은 누구와 통신을 했는지 등 트래픽 분석으로도 유의미한 정보를 습득할 수 있다.  
 
-
 <b>능동적 공격</b>  
-- Masquerade : dd  
-- Replay : dd  
-- Modification of messages : dd  
-- Denial of service (Dos) : dd  
+- Masquerade : 송신자를 Fake 치는 것. 마치 Bob이 송신한것처럼 보이지만 사실은 Darth가 보낸 메세지. 수신자에게 혼동을 줄 수 있다.  
+- Replay : 요청을 다시 보내는 공격이다. 예를들면 송금 요청을 보내면 그 유효메세지를 그대로 다시 보내는 것  
+- Modification of messages : 송신자가 수신자에게 메세지를 보내면 중간에 빼돌려서 메세지를 복제하여 수신자에게 보내는 것.  
+- Denial of service (Dos) : 서버를 망치는 공격. 물리적으로 부수거나, 서버 관리자를 매수하거나 등이 있지만 실질적으로 쓰이는 DoS공격은 '강제로 트래픽을 증가시켜 과부화가 오도록 하는 것'을 주로 말한다.  
+DoS공격을 위해서는 디바이스 수가 많아야한다. 그래야 구별이 어렵기때문. 요즘에는 DDoS공격을 주로 한다. (Distributed DoS)  
+트래픽 증가를 위해 10만대의 컴퓨터를 쓰는 것보다는 관리자 매수가 빠를텐데, 그래서 바이러스를 사용하여 여러 컴퓨터들을 DoS를 위한 디바이스로 사용한다.  
 
+
+보안서비스는  
+Authentication(아이디 비밀번호로 확인하는 등), Acces control(접근을 통제. 집의 현관문), Data confidentiality, Data integrity, Non-repudiation(부인방지 부인봉쇄 시스템. 이걸위해 전자서명을 함)..  
