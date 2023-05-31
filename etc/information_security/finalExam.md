@@ -174,13 +174,128 @@ Modern Block Ciphers (현대 블럭 암호)
 그 중에서 DES(Data Encryption Standard)에 대해 알아볼 예정.  
 
 Block Cipher과 Stream Cipher가 있는데,  
-Block Cipher은 메세지를 블록단위로 처리하고 encryption, decryption한다.  
+Block Cipher은 메세지를 블록단위로 처리하고 encryption, decryption한다. 헤드+내용여러개  
 Steam Cipher은 encrypt/decrypt할 때 메세지를 bit나 byte로 처리한다.  
 현재의 많은 암호들은 Block Cipher이다.  
 
-plaintext->ciphertext가 될 때 비트 하나 하나를 암호화하는지, 블럭 단위로 하는지 차이인것이다.  
+plaintext->ciphertext가 될 때 비트or바이트 하나 하나를 암호화하는지, 블럭 단위로 하는지 차이인것이다.  
 
 ### 기본적인 사실  
 n비트 크기의 plaintext block일 때,
 2^n개의 다른 plaintext block이 있다. Reversible mapping의 경우 (암호화가 되면 역함수화 하면 암호해독 = 1:1매칭) 2^n!의 경우의 수를 가진다.  
-테이블로 정의되는 key의 길이는 2^n*n비트다.  
+테이블로 정의되는 key의 길이는 2^n*n비트다. (plaintext block개수*key길이)  
+(블럭size가 2비트면, 2^2=4개의 블럭 존재. 키 경우의수는 4!=24가지. 테이블로 정의되는 key길이는 8비트) 블록이 조금만 커도 경우의 수가 매우 커진다.  
+
+### Shannon : Substitution-Permutation Ciphers  
+Claude Shannon은 1949년 논문에서 S-P(Substitution-Permutation) 개념을 소개했다.  
+S-P 네트워크는 현대 암호학의 기초이다.  
+S-P 네트워크는 두개의 원시적 암호화작업을 기반으로 한다. substitution(S-Box)와 permutation(P-Box)  
+
+<b>A 3-round Substitution-Permutation Network</b>
+구조를 보면 plaintext가 K0을 XOR하여 S박스 4개에 들어가고 그 값들이 P박스에 들어가서 섞어지면 라운드1. 이후 출력값에 K1키가 XOR되어 S-P박스에 들어가면 라운드2. 이후 출력값에 K2가 XOR되고 마지막라운드3에선 S박스만 통과한뒤 출력값을 K3에 넣어 ciphertext가 된다.  
+
+<b>Feistel Cipher Structure</b>  
+Shannon의 S-P Network에선 S-Box가 invertible해야한다(가역적)  
+Feistel Cipher 구조에서는 S-box가 invertible할 필요가 없다.  
+따라서 Feistel Network는 non-invertible 성분으로부터 invertible구조를 형성하는 방법이다.  
+- Encryption : RE16 = LE15 XOR F(RE15, K16)  
+- Decryption : RD1 = RE16 XOR F(LE16, K16)  
+- RE15 = LE16  
+- RD1 = RE16 XOR F(LE16, K16) = LE15 XOR F(RE15, K16) XOR F(LE16, K16) = LE15  
+따라서 RD1 = LE15  
+
+<b>A xor 0 = A, A xor A = 0</b>  
+
+Key가 1~n개 있고 여러번 암호화 한 것을 다시 역함수를 거치면 풀린다. non-invertible하지만 전체구성에선 역함수가 가능한 구조.  
+라운드 거치며 섞기도, 함수에 넣기도, 그대로 가져오기도하며 점점 암호화가 진행됨  
+(그대로 끌고 내려오는 것 반, 섞는것 반. 라운드 거치며 복잡. Inverse존재할필요 X)  
+이렇게 F가 non-invertible해도 되기에 디자인하기 편하다.  
+Decryption에선 아래서부터 위로 거꾸로 올라가기만 하고 F도 그대로 적용. 순서만 맞으면 됨  
+
+Fiestel Cipher의 설계 요소 : Block size, Key size, Number of rounds (RoundFunction과 연관. 라운드마다 같은 Key쓸지 매 라운드마다 키를 준비할지 라운드별로 Key를 변화시킬지 결정할 것), Subkey generation algorithm, Round function  
+
+### DES (Data Encryption Standard)  
+64비트 데이터블록, 56비트 키  
+IBM에서 1960년 후반 Horst Feistel이 암호 연구를 시작함.  
+이 프로젝트는 1971년 'Lucifer' 암호 개발로 끝이남.  
+Lucifer는 64비트 데이터 블록, 128비트 키를 가진 Feistel Block Cipher이다.  
+1973년 NBS는 국가암호표준에 대한 제안요청 발행  
+IBM은 수정된 루시퍼를 DES로 승인함. (정부가 조금 도움을 주어 바꿔나옴)  
+> 설계시에 논란이 있었음.  
+Lucifer는 128비트의 키를 가짐. 근데 DES로 바뀌면서 56비트의 키가 됨.  
+설계 기준 분류는 S-Box  
+NSA(No Search Agency) - 데이터분석부서. 모든 통신을 도감청함  에서 상업용 암호로 재개발된것.
+
+아무튼  
+DES는 64비트의 KEY가 들어오고 그 중 56비트가 추려저 사용된다.  
+7비트의 정보+1비트의 패리티비트 * 8개 = 56+8 = 64비트  
+홀수패리티비트는1, 짝수패리티비트는0.  
+(데이터가 바뀌어있으면 짝수개여야하는데 홀수개. => 오류 검증)  
+
+DES는 라운드의 시작과 끝에 Initial permutation 그리고 Inverse Initial permutation이 사용된다.  
+
+예전에는 DES를 공부? = F를 공부하는 것  
+
+64비트의 키에서 패리티비트 8비트 버리기 => Permuted Choice 1 (56비트) => 라운드 넘겨주며 Permuted Choice 2로 8비트 버려서 주고 => 다음 라운드로 가기 전에 Key를 Shift.  
+다음 라운드에서도 shift된 56비트를 8비트 버려서 Permuted choice 2하여 Round2에 전달.  
+<b>Y = IP^(-1)(X) = IP^(-1)(IP(M))</b>  
+
+DES Round 구조  
+32비트의 L, 32비트의 R로 구성되어 있다.  
+DES는 Feistel 암호에 대해  
+Li = R(i-1)  
+Ri = L(i-1) XOR F(R(i-1), Ki)  
+1. F는 32비트 R과 48비트의 subkey를 사용한다.  
+2. 따라서 F를 48비트로 Expansion(확장) permutation 하고  
+3. 그렇게 나온 48비트의 expanded R과 48비트 Key를 XOR 한다.  
+4. 그 뒤 8개의 S-box들에 값을 넣어 32비트의 결과를 얻어낸다.  
+5. 32비트의 결과를 P-Box에 넣어 Permutation하여 F함수의 결과를 도출한다.  
+
+이후 F함수를 거친 32비트 R(i-1)값은 32비트의 L(i-1)값과 XOR하여 Ri 값이 된다.   
+
+### DES 알고리즘 파악  
+- E-Box (Expansion Permutation) : Expansion은 32비트가 입력되면 8행 4열로 만들고, 한 행당 맨앞과 맨뒤에 이어지는 수를 붙여서 만든다. 1번 수 앞엔 32번째 수, 4번 뒤에는 5번 수... 32번 뒤에는 1번 수..  
+- P-Box (Permutation Function) : Permutation Table(4x8행렬) 에 index들이 적혀있는데, 입력되는 32비트의 index에서 값을 가져온다.  
+- S-Box (Substitution Boxes) : 6bit input to 4bit output 이다. 6비트가 들어오면 0번, 5번비트를 행으로하고 (00, 01, 10, 11 4개의 행을 결정) 1~4번비트를 열로하여 15개의 열로 만든다. 011011은 행이 01, 열이 1101이므로 [1][13]인덱스. 즉 2행 14열이다.  
+S-Box는 테이블로 존재한다. 4행 16열로 존재하는 테이블을 매칭해주는 것.    
+
+Round Function F 구조 : R(32)->E->(48) XOR K(48)-> S1~S8 -> (32) -> P -> 32 bits result  
+
+64비트의 Key에서 매 8번째 bit는 무시된다.(패리티비트)  
+그렇게 Permuted Choice1은 56비트를 고르게 된다.  
+56비트의 Key는 C0와 D0로 28비트씩 이등분한다.  
+Key Rotation Schedule 테이블을 사용하여 Key를 개별적으로 1혹은2칸 shift left 한다. (만약 한칸씩 shift left하는 구조라면 28번 라운드 지나면 다시 돌아옴)  
+2차 Permuted Choice는 48비트로 Table에 맞게 Permutation하여 뽑아내고, 이후 F함수 내에서 XOR하는 용도로 쓰인다.  
+
+16번의 라운드를 거치면 거의 모든 문자가 다른 결과를 낼 것이다.  
+
+> DES 깨는 방법. 현재는 key가 56비트라 좋은 컴퓨터를 사용하여 Brute-Force하면 깨진다.  
+옛날에 (98년) 3억을 들여 DES를 깨는 기계 만들었는데 이 덕에 이틀만에 깨졌다.(EFF's DES-cracker)  
+그 이유는 Key가 짧아서. 이제는 안전하지 않다.  
+다음 세대의 암호탐색은 AES이다.(현재까지 사용)  
+
+구조를 보고 Feistel구조가 아닌것 아닌것을 예시로 보고 알 수 있어야 한다.  
+
+## 4장  
+### Algebra  
+수학은 Algebra와 Analysis 두 부류로 나뉜다. 주로 컴퓨터, IT쪽에서 Algebra를 사용한다.  
+컴퓨터는 실제 넣을수있는 유효숫자가 얼마 되지 않기에 Real Number를 다룰일이 없다. (표현하기 어려움. 예를들면 파이)  
+TCP-IP에서는 데이터를 받았는데 깨지면 다시 보내라고 하지만, 위성통신에선 깨진것을 복구하여 통신  
+
+컴퓨터에서 수를 정확히 나타내려면 일단 Finite(유한)해야한다.  
+사칙연산이 가능한 유효숫자를 원함. 위성통신에서도 약간의 오류는 복구할 수 있도록.  
+
+정수도 무한집합인데, 이것을 유한집합으로 만들고 처리.  
+
+### Divisibility  
+a=mb 꼴로 둘 수 있다면 a/b가 가능하다고 봄. b|a는 b divides a  
+a|1은 a=+-1이고, a|b 이고 b|a이면 a=+-b이다.  
+모든 0이 아닌 b는 0을 divides한다.  
+a|b이자 b|c이면 a|c이다.  
+b|g이고 b|h이면 b|(mg+nh)할 수 있다. (m,n은 임의의 정수)  
+a를 n으로 divides하면 a=qn+r, 0 <= r < n , q=내림a/n  
+내림이라는건... 내림(11/7)이면 1.xxx이니까 1이되고,  
+내림(-11/7)이면 -1.xxx이니까 '내려서' -2가 된다.  
+> 코딩에서는 int n = -11/7 하면 -2가 아니라, -1이 나올 것이다.  
+표준이 0을 바라보고 가장 가까운 숫자를 택하는 것이 되었기 때문이다.  
+
