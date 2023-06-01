@@ -391,3 +391,232 @@ n mod n = 0이다.
 
 <b>Arithmetic Modulo 8</b>  
 8의 Modulo 산술. 0~7의 값으로 표현된다.  
+inverse(역원)가 존재하는가에서 덧셈의 경우엔 더해서 0이되는 것을 찾으면 되고, 곱셈의 경우엔 곱해서 1이되는 경우를 찾으면 된다. A - A = 0, A * A^(-1) = 1  
+Modulo 8의 경우에는 덧셈의 inverse(역원)는 전부 존재하지만 곱셈의 경우에는 0, 2, 4, 6에서 곱해서 1이 나오는 수가 존재하지 않는다. 왜냐면 8이 서로소가 아닌 수기때문이다.  
+modulo 8의 예시는 2x7=14mod8=6, 2x7x3x4는 계산할 필요없이 2x4가 8이기에 0임  
+
+### 나머지 집합  
+Zn={0,1,...,(n-1)} 는 mod n의 집합을 의미한다.(나머지 집합:set of residues)  
+(w+x) mod n = (x+w) mod n. 곱셈도 마찬가지  
+mod n을 거치기 이전에 있는 괄호에서는 그냥 우리가 평소에 알던 수 체계마냥 결합 분할 다 할 수 있다.  
+[(w+x)+y] mod n 을 [w+(x+y)] mod n으로 바꾸든..  
+[w*(x+y)] mod n 을 [wx+wy] mod n 으로 바꾸든.  
+(0+w)mod n 을 w mod n으로, (1*w)mod n을 w mod n으로 바꾸든..  
+w가 Zn집합의 원소이면 (mod n 의 나머지) w+z≡0modn이 존재  
+
+<b>Modular 연산의 특징(Properties)</b>  
+- 만약 (a+b)≡(a+c)(mod n) 이면, b≡c(mod n)이다.  
+(그냥 두 항에 -b한거 아님?)  
+예를 들어 5+23 ≡ 5+7 (mod 8)이면, 23 ≡ 7(mod 8)이다.  
+- 만약 (axb)≡(axc)(mod n) 이면, b≡c(mod n)이다. 단 a가 n과 서로소여야 한다.  
+예로 6x3≡2(mod 8) 이라면... 2x3x3≡2x1(mod 8)이니까 3x3≡1(mod 8)이다? 어 되네.  
+
+서로소가 아니라면 예를들어 a=6이고 n=8이다?  
+modular 8에서 6의배수mod 8을 하면 나머지가 0,6,4,2,0,6,4,2가 된다.  
+6x0 mod 8이나, 6x4 mod 8이나 같음. 위에 우리가 썻던 공식 만족 X  
+하지만 a와 n이 서로소라면, a=5, n=8  
+5의 배수mod 8의 경우에 나머지가 0,5,2,7,4,1,6,3으로 중복없는 나머지 집합을 가지게 된다.  
+이런 경우에 위에서 얘기한 공식을 적용 가능.  
+
+### Extended Euclidean Algorithm  
+gcd(a,b)를 했을 때 d만 나오는 것이 아닌, ax+by=d의 형태의 표현이 추가적으로 나오는 알고리즘을 말한다.  
+> 예를들어, gcd(259, 70)  
+259 = 3(70) + 49 /// 49 = 259 - 3(70)  
+70 = 1(49) + 21 /// 21 = 70 - 1(49)  
+49 = 2(21) + 7 /// 7 = 49 - 2(21)  
+21 = 3(7) + 0 /// = 49 - 2(70 - 49)  
+............./// = 3(49) - 2(70)  
+............/// = 3(259 - 3(70)) - 2(70)  
+.........../// = 3(259) - 11(70)  
+따라서 gcd(259,70) = 7 = 259x3 + 70x(-11)이다.  
+
+목표는 ax+by=d=gcd(a,b)이다.  
+a=ax(-1)+by(-1), x(-1) = 1 이고, y(-1) = 0  
+b=ax0+by0, x0 = 0이고, y0 = 1  
+이 상태에서 r(-1)=a, a = q1b + r1, r1 = ax1 + by1  
+r0=b, b = q2r1 + r2, r2 = ax2+by2  
+r1 = q3r2 + r3, r3 = ax3+by3  
+...  
+r(n-2) = qnr(n-1) + rn, rn = axn+byn  
+r(n-1) = q(n+1)rn + 0  
+그러면 ri = r(i-2) - r(i-1)qi  
+ri = axi+byi, 그러면 xi=x(i-2) - qix(i-1) 이고 yi=y(i-2) - qiy(i-1)  
+
+gcd(1759, 550)은 r(-1)=a=1759, r0=b=550, r1=109;q1=3  
+
+### Extended Euclidean 외워야 하는 공식은 딱 이것들.  
+- 라운드는 -1부터 시작하여... -1 0 1 2 ... 이순서  
+- r(-1) = a, q(-1) = / , x(-1) = 1, y(-1) = 0  
+r0 = b, q0 = / , x0 = 0, y0 = 1  
+r1 = a mod b, q1=내림(a/b) , x1 = x(-1) - q1 * x0, y1 = y(-1) -y1 * y0  
+r2 = b mod r1, q2=내림(b/r1), x2 = x0 - q2 * x1 , y2 = y0 - q2 * y1  
+...  
+- xi = x(i-2) - qi * x(i-1) 이다. y도 마찬가지  
+- 나머지(r)이 0이 될때까지 진행. 나머지가 0이 되기 이전 라운드에 나머지가 d값. 그 줄의 xi, yi값이 ax+by에 들어갈 값들  
+
+### Group, Ring, Field  
+테이블만 보고 Addition인지 Multiplication인지 구분할 수 있어야 함. 구분방법 다양한데, 만약 modular 8이면 항등원이 항상 존재하는지.(곱의 역원은 존재안하기도 함) 교환법칙이 성립하는지 등으로 알 수 있다.  
+
+위 예시처럼 수체계의 성질들을 대입해보며 어느 조건까지 만족하는지 파악하여 Group인지, Ring인지, Field인지 확인할 수 있다.  
+Field가 가장 큰 범위(모든 수체계 만족), 그 안에 Ring, 그 안에 Group  
+A1~A5, M1~M7까지 조건이 총 12가지 있다. 순차적으로 검증해보며 어디까지 만족하는지 확인하면 된다.  
+
+> Group  
+(A1) : a와 b가 S에 속해있으면, a+b도 S에 속한다.  
+(A2) : a+(b+c) = (a+b)+c 가 S에 속하는 a,b,c 모두에게 적용된다.  
+(A3) : S내에서 a+0 = 0+a = a이다.  
+(A4) : S에 속하는 a에 대해 -a가 S에 속하면 a+(-a)=(-a)+a = 0이다. (항등원이 존재)  
+
+> Abelian group  
+(A5) : a+b = b+a 를 S에 속하는 모든 a,b가 만족
+
+> Ring  
+(M1) : a와 b가 S에 속해있으면, ab도 b에 속한다.  
+(M2) : 모든 a, b, c가 S에 있다면 a(bc)=(ab)c를 만족한다.  
+(M3) : 모든 a, b, c가 S에 있으면 a(b+c) = ab+ac 이고, (a+b)c = ac+bc를 만족한다.  
+
+> Commutative ring  
+(M4) : 모든 a, b가 S에 있으면 ab = ba를 만족한다.  
+
+> Integral domain  
+(M5) : 항등원이 존재. 모든 a가 S에 있으면 a1 = 1a = a 를 만족한다.  
+(M6) : a, b가 S에 있고, ab=0이라면 a=0이거나 b=0이다. 우리가 아는 정수집합이 이러한 조건을 만족한다.  
+Z8과 같은 경우를 예를들때 2x4=0이 될 수 있는데(a나 b가 0이 아니여도 0이 될 수 있음) 이런 경우가 Field가 될 수 있음
+
+> Field (위 모든 조건을 만족)  
+(M7) : a가 S에 속하고 0이 아닐때, aa^(-1)=a^(-1)a=1을 만족하는 S에 속하는 a^(-1)이 존재한다.  
+M7을 만족하면 자동으로 M6을 만족하는거라서 M6을 빼도 된다.  
+유리수,복소수,실수들이 field를 만족함  
+
+### Finite Field 유한체와 Galois field GF(p)  
+Field를 만족하는 유한체(Finite)  
+유한체의 조건에는 prime number개의 원소가 필요하다.  
+예를들어 5개의 원소로는 유한체를 만들 수 있지만 6개의 원소로는 유한체를 만들 수 없다.  
+<b>원소개수가 p^n꼴 (소수의 지수승)이여야 유한체를 만들 수 있다.</b>  
+
+### GF(p^n) : Galois Field  
+1. n=1 : GF(p)  
+2. n>1 : GF(p^n)  
+
+### GF(p)  
+원소개수가 9개라면 GF(3^2)로 표기한다.  
+8로 나눈 나머지 집합은 곱셈은 문제가 없지만 덧셈이 문제?  
+애초에 나머지집합은 소수(prime number)를 뽑으면 문제가 없다.  
+GF(7)은 따라서 문제가 없다.  
+<b>Zp라면 0빼고 다 p에 서로소이고, 따라서 Finite Field를 만족한다.</b>  
+
+GF(p) ~= Zp={0, 1, ..., p-1}  
+
+근데 extended euclidean algorithm에서 x와 y를 구하는데 어디에 사용하는가?  
+gcd(a,b)=1이라면 ax+by=1이다. 양변에 mod a하면  
+(ax+by) mod a = 1 mod a  
+(ax mod a + by mod a) mod a = 1 mod a  
+0 + by mod a = 1 mod a  
+따라서 y는 b의 곱셈에 대한 역원이다. (y=b^(-1))  
+
+gcd(15,8)이라면, d=1=ax+by=15x(-1)+8x2 이다.  
+Z15에서 8의 역원은 2이다. (y가 b의 곱셈에대한 역원이 되었음)  
+
+### Polynomail  
+f(x)+g(x) = m시그마(ai+bi)x^i + n시그마aix^i  
+f(x)*g(x) = n+m시그마cix^i  
+Ordinal Polynomail Arithmetic 정규 다항식 산술  
+
+만약 f(x) = x^3+x^2+2 이고 g(x)=x^2-x+1  
+f(x)+g(x) = x^3+2x^2-x+3  
+f(x)-g(x) = x^3+x+1  
+f(x)*g(x) = x^5+3x^2-2x+2  
+
+Zp에서 계수가 필드F의 요소인 다항식을 생각해본다.  
+Polynomial이 GF(p)에서 어떻게 작용하는지.  
+GF(2)에서는 계수가 mod 2=0인 식들은 모두 소거한다.  
+Addition, Subtraction, Multiplication, Division 모두 해당한다.  
+
+### Euclidean Algorithm for Polynomials  
+a(x)=x^6+x^5+x^4+x^3+x^2+x+1 이고 b(x)=x^4+x^2+x+1 일때 gcd[a(x),b(x)]를 한다.  
+먼저 둘을 나누어야 몫과 나머지를 구할수있다.  
+Euclidean Algorithm 처럼 똑같이 할 수 있다.  
+이 경우 gcd(a(x),b(x))=x^3+x^2+1 이 결과값이 된다.  
+
+<b>Irreducible Polynomial(Prime Polynomial)</b>  
+소수처럼 동작하는 다항식(polynomail)도 있다. 본인보다 차수가 낮은 두개의 다항식으로 나타낼 수 없을 때를 의미한다.  
+
+예시로 f(x)=x^4+1 이 GF(2) 수 체계에서는 환원이 가능해서 x^4+1 = (x+1)(x^3+x^2+x+1) 이다.  
+반면, f(x)=x^3+x+1이면 x+1는 f(x)의 요소가 아니다. gcd가 1이 나온다. (서로소) 이런 경우를 Prime Polynomial(Irreducible Polynomial)이라고 한다.  
+
+### GF(p^n)  
+8비트에서 동작하는 알고리즘을 하려면 GF(2^8)을 사용하여 0~255의 수를 나타낼 수 있다. 근데 Z256은 Field가 아님.  
+따라서 256에 가까운 prime number를 찾으면 251이다.  
+근데 Z251을 하자니 0~250까지는 괜찮은데 251~255를 나타내는 패턴이 사용불가해서 비효율적으로 사용된다.  
+
+GF(2^3)의 유한체 구성하려면 x^3로 시작하는 irreducible polynomial을 택해야한다.  
+그 경우 x^3+x^2+1과 x^3+x+1 두가지 경우밖에 존재하지 않는다. (modular x^3+x^2+1 혹은 X^3+x+1)  
+
+m(x)는 사전에 주어진다. 그냥 다 계산하고 GF(2^n)이니까 계수가 2의 배수면 제거하면서 간다.  
+f(x)+g(x)를 하거나 f(x)*g(x)를 해서 나타난 다항식의 계수가 m(x)보다 크거나 같으면 나눠야하고, 작으면 그대로 둔다? 인가...  
+
+m(x)가 x^3+x+1일때, x^3 mod m(x)를 하면,
+x^3≡x+1(mod m(x)) 가 나온다. 2 mod 2.5 하면 0.5가 나오지 2가 나오는게 아니잖아..??  
+이걸 토대로 문제를 풀면 된다.  
+비트는 분해하여 XOR로 다시 합칠수있다.  
+따라서 shift left하다가 수가 넘어가면, 그 넘어간 비트를 mod 해주고 결과값을 XOR해서 합치면 된다.  
+
+다항식(Polynomial)에서도 Zn 수체계에서 nx+by=1(mod n)을 만족한다.  
+m(x)을 수체계로 하는 gcd(a,b)=d 일때, d가 1(최대공약수가 1)이면 nx+by=1 이니까.  
+Extended Euclidean Algorithm을 똑같이 적용시켜서 m(x)를 a로 두고, 역원을 구하고자하는 f(x)를 b로 두어 ax+by=1을 구한다.  
+그리고 0+by=1, 즉 f(x)y=1 이니까 y=f(x)^(-1)을 만족하는 값을 얻을 수 있게 된다.  
+
+## 5장  
+### AES (Advanced Encryption Standard)  
+미국국립표준기술연구소(NIST)가 제정한 전자데이터암호화 규격  
+두명의 벨기에 암호학자(Joan Daemen, Vincent Rijmen)가 개발한 Rijndael을 기반으로 만들어짐  
+AES는 미국 정부에 의해 채택되어 현재까지도 쓰이고 있다. 1977년에 나온 DES를 대체한다.  
+15개의 첫 라운드 후보자들... CAST256, CRYPTON, DEAL, DFC, E2, FROG, HastyPudding, LOKI97, MAGENTA, MARS, RC6, Rijindael, SAFER+, Serpent, Twofish  
+
+<b>AES 기본 구조</b>  
+- GF(2^8)의 수체계를 기반으로 한다.  
+- m(x)=x^8+x^4+x^3+x+1 그러므로 x^8=x^4+x^3+x+1 이다.  
+- AES의 plaintext block size는 128비트이다. (16바이트) AES종류와 무관함  
+- Key의 길이는 128, 192, 256비트가 될 수 있다. 이것에 따라 AES128, AES192, AES256이 결정된다.  
+- 라운드의 개수는 10, 12, 14이다.  
+- 4바이트의 4개의 열이 존재하는 형태이다. 4x4의 바이트들로 구성되어있음 (Block Size 16바이트)  
+행렬에 넣는 순서는 <b>column 순서를 표준</b>으로 삼았다.  
+- 유사하게 Key 또한 4x4의 16바이트 행렬로 전달된다.  
+
+<img src="./AESprocess.png" width="70%">  
+
+<b>AES의 특징</b>  
+AES는 Feistel구조가 아니다.  
+DES는 하나의 구현으로 Encryption과 Decryption에 사용가능한 F함수를 만들 수 있는데, AES는 둘 다 구현해야 한다. 보통 Encryption을 열심히.  
+4개의 다른 reversible transformations이 사용되었다. 가역적임  
+- SubBytes  
+- ShiftRows  
+- MixColumns  
+- AddRoundKey  
+
+AES128을 기준으로 말하면 AddRoundKey변환으로 시작하고 그 다음 각각 4개의 변환을 모두 포함하는 9개의 라운드, 그리고 10번째 Round에서는 3개의 Transformation만 사용한다.(mix column 제외)  
+Key는 오직 AddRoundKey transformation에서만 사용한다.  
+
+AES는 각각의 transformations에서 역함수가 존재한다.  
+각각의 transformation에 대해 간단히 설명하면,  
+- SubBytes : S-Box인데, S-Box에 행렬로 값이 입력되면 입력받는대로 테이블에 적힌 위치에 값들을 위치변환하여 저장한다. inverse S-Box하면 그대로 거꾸로 돌아감  
+- ShiftRows : 행별로 섞는 방법이다. 1번 행은 그대로, 2번행은 1칸씩 왼쪽으로 shift, 3번행은 2칸씩 왼쪽 shift, 4번행은 3칸씩 왼쪽 shift  
+Inverse는 오른쪽으로 shift하면 된다.  
+- MixColumns : 열을 섞는다.   
+- AddRoundKey : 첫번째 행렬은 State, 두번째 행렬은 round key.  
+
+AES에서 Key Expansion(키 확장)은 어떻게 이루어지는가?  
+1byte의 키 16개를 사용하여 4bytes짜리 키 44개를 채운다.  
+첫 4개의 워드는 1byte 키 16개 그대로 카피.  
+(1234, 5678, .... 13141516) 총 4개의 워드  
+본인보다 index가 1개 적은 키와 4개 적은 키를 XOR해준다.  
+index가 4의 배수면 index가 4개 적은애는 그대로 가져오고, 1작은애는 g(x)함수를 거쳐서 가져온다. 그리고 둘이 XOR  
+temp=SubWord(Rotation그니까 leftShift Word(temp)) XOR RoundConst[i/4]  
+
+### Inverse AES  
+Encryption에서는 라운드 순서가  
+Substitue byte -> Shift Rows -> Mix columns -> AddRoundKey  
+Decryption의 라운드 순서는  
+Inverse Sub bytes -> Inverse Shift rows -> Inverse mix cols -> Add round key  
+
+decryption도 마찬가지로 마지막 라운드 3개의 transformation  
