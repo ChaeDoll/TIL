@@ -620,3 +620,234 @@ Decryption의 라운드 순서는
 Inverse Sub bytes -> Inverse Shift rows -> Inverse mix cols -> Add round key  
 
 decryption도 마찬가지로 마지막 라운드 3개의 transformation  
+
+일단 AES쓰면 안전하다.  
+ALZip은 ZIP 2.0 호환, AES128bit(Advanced Encyption Standard). 128비트 크기의 Block Size를 쓰는 대칭형 알고리즘, LEA128,LEA256 등 국내표준 사용  
+Adobe는 AES256을 사용한다. 128도 좋지만 언제 갑자기 뚫릴지 모르기때문이다. 또한 pdf는 용량이 그리 크지 않아 256이나 128이나 비슷하다.  
+
+## 6장  
+Alternatives(대안) to DES  
+bruteforce attack에 대한 잠재적 취약성을 고려하면 대안이 필요하다. (DES는 56비트이기에 뚫리긴 함)  
+
+1. 완전 새로운 알고리즘 설계. ex:AES  
+2. 기존 방법에서 여러개의 DES를 사용하여 암호 강화  
+
+2번의 경우를 알아볼것이다.  
+<b>Double DES</b>  
+DES를 두번 통과시켜서 암호화하는 방법.  
+C=E(K2, E(K1, P)) 이고  
+P=D(K1, D(K2, C)) 이다.  
+key는 두개가 필요하기때문에 56bitx2 = 112bit이다. blocksize = 64  
+
+하지만 Meet-in-the-middle attack이라는 공격에 취약성을 드러내고 있다.  
+X=E(K1,P) = D(K2,C)이기때문에 보안성이 2^56정도가 아니라, 2^56 * 2배 정도, 즉 2^57정도밖에 안된다.  
+Double DES의 Blocksize는 64bit이다.  
+일반적인 경우 2^112/2^64 라서 거짓정보는 2^48의 경우의수가 있다.  
+하지만 양쪽에서 공격하는 이 경우엔 2^48/2^64=2^(-16)이 남고, 이는 보안에 취약하다는 것을 알 수 있다.  
+
+<b>Triple DES</b>  
+2개가 취약하기에 3개로 늘렸다.  
+C = E(K3, D(K2, E(K1, P)))  
+P = D(K1, E(K2, D(K3, C)))  
+Encryption은 E->D->E 이고, Decryption은 D->E->D이다.  
+Block Size 마찬가지로 64  
+
+Triple DES는 3가지의 옵션을 제공한다.  
+모든 KEY가 다를때, K1과 K3은 같고(같은 암호화끼리) K2만 다를때, 모든 KEY가 같을 때  
+
+모든 KEY가 전부 다른 경우, Key의 Size는 56x3=168bits가 된다. 심지어 meet-in-the-middle attack에도 2개의 DES를 통과하는 효과를 내기에 112bits의 안전도를 보인다.  
+K1과 K3가 만약 같다면, Key의 Size 자체는 112bits이다. NIST가 말하길 실질적으로 80bits의 안전도를 갖는다고 했다.  
+
+### Modes of Operation  
+Block길이가 정해져있는 경우에 BlockSize보다 작은 메세지가 들어오면 연산을 수행하지 못한다.  
+이런경우 Padding을 통해 비트를 늘려서 연산하면 되지만, 혹여나 메세지가 BlockSize보다 큰 경우에는 어떻게 해야하는가?  
+
+메세지 길이가 너무 길면 이를 BlockSize로 잘라서 각각을 암호화 하여 합친다. 하지만 이런 경우에도 보안을 신경쓰면 좋겠지?  
+Block 단위 cipher을 하는 경우에 Mode에 따라서 방법이 다르다.  
+
+그냥 우리가 일반적으로 생각할 수 있는 나누고 암호화하고 붙이는 방식은 ECB(Electronic Code Book)이다.  
+- <b>ECB (Electronic Code Book)</b> : 별로 안전하지 않은 방식  
+Cj=E(K,Pj), for j=1,...,N  
+Pj=D(K,Cj), for j=1,...,N  
+ECB는 deterministic(결정론적)  
+
+Padding은 뒤에 Block Size가 차도록 0을 채우는 것.  
+block cipher은 stream cipher로 변환가능. CFB,OFB,CTR에서 사용?  
+
+안전을 위해서 이제 IV(Initialization Vector)를 붙인 다른 암호화들을 알아볼 것이다. ECB말고 다른 모드들은 deterministic하지 않다.(안전함)  
+- CBC (Cipher Block Chaining) : encryption = P1과 IV를 XOR한뒤 Encryption. 이후 C1을 IV처럼 활용...  
+decryption = C1을 Decryption하고 IV와 XOR하여 P1획득. 뒤부턴 C1을 IV값으로 사용  
+- CFB (Cipher Feedback) : IV를 Encryption하고 그 결과를 메세지와 XOR한다. IV값을 shift left하고 C1값(8비트)을 오른쪽에 넣어서 새로운 IV로 사용.  
+Decryption에서 AES decryption사용X. AES는 encryption이 더 빠른데 encrypt만 디자인하면 돼서 좋음.  
+특징은 즉, StreamCipher처럼 사용가능하고 Encryption만 필요로 함  
+- OFB (Output Feedback) : IV값을 Encryption하고 그걸 다음 IV로 사용하고... 반복  
+c1은 그냥 이 결과값들과 p1을 XOR하면 된다. 미리 암호화 패킷을 만들어 둘 수 있는것이 장점이다.  
+받는 사람도 미리 IV를 안다면 연산이 빠르다.  
+- CTR (Counter) : 매번 카운터마다 카운터값을 IV로 사용한다. Cj=Pj XOR E(K,Tj) / Dj=Cj XOR E(K,Tj)  
+OFB와 방식 자체는 동일한데 매번 들어온다는것이 특징  
+
+CBC가 default인 경우가 많음. 요즘은 CTR이 대세이다. 왜냐면 멀티코어가 가능하기 때문.  
+Decryption의 구현이 필수가 아닌 모드는 CFB, OFB, CTR이다.  
+
+### 결론  
+ECB는 안전하지 않다. CBC, CFB, OFB, CTR은 안전하다.  
+CBC는 안전하지만 장점이 별로 없고.. CFB, OFB, CTR은 encryption만 구현하면 돼서 좋다.  
+이 외에도 authentication mode로 CMAC이라고 메세지에 태그를 달아 연산값이 같은지 확인하는 암호화도 있다.  
+
+## 8장  
+비대칭 KEY - 잠구는 열쇠와 여는 열쇠가 다름. 전자서명의 기초기술  
+
+<b>Fermat's Theorem (페르마 정리)</b>  
+p가 소수(prime number)이고 a가 양의 정수이고 p로 나누어지지 않는다면...
+- a^(p-1) ≡ 1 (mod p)  
+- a^p ≡ a(mod p)  
+
+예시로 2^10 ≡ x (mod 11)이면, x=1  
+3^52 ≡ x (mod 11) 이면  
+(3^10)^5 * 3^2 ≡ x (mod 11) 이고,  
+(1)^5 * 3^2 ≡ x (mod 11) 이니까..  
+9 ≡ x (mod 11) , x=9이다.  
+
+사실상 지수에 mod (p-1)이 있는것과 같다.  
+3^52 mod 11 ≡ 3^(52 mod 11) mod 11 ≡ 9 mod 11  
+
+ja ≡ ka (mod p) 라면 j ≡ k (mod p)이다.  
+a^(p-1) * (p-1)! ≡ (p-1)! (mod p) 이다.  
+
+<b>Euler's totient function (오일러정리)</b>  
+파이(n)은 n보다 작거나 같은 n과 서로소인 양수이다.  
+p,q가 소수일 때..  
+파이(p) = p-1  
+파이(p^k) = p^k - p^(k-1)  
+파이(pq) = pq - p - q + 1 = (p-1)(q-1) = 파이(p)파이(q)  
+예시 : 파이(13) = 12, 파이(21)=파이(3)파이(7)=2x6=12  
+
+오일러의 곱 공식도 있다.  
+n=p1^k1 * p2^k2 * ... pr^kr 이고 다 소수라면..  
+파이(n) = 파이(p1^k1)파이(p2^k2)...파이(pr^kr) = (p1^k1 - p1^(k1-1)) * ... * (pr^kr - pr^(kr-1))  
+이다.  
+예시 : 파이(36) = 파이(2^2 * 3^2) = (2^2-2^1)(3^2-3^1) = 12  
+파이(17640) = 파이(2^3 * 3^2 * 5^1 * 7^2) = ...=4032  
+
+모든 a와 n이 서로소일 때. (n의 수체계)  
+a^파이(n) ≡ 1 (mod n) 이다.  
+[파이(n)=n-1이면 a^(n-1)≡1(mod n)이니 페르마 정리 만족]  
+
+예시 : 8^82≡x(mod 165)에서 양수 x를 구해라  
+파이(165) = 파이(3^1 * 5^1 * 11^1) = (3-1)(5-1)(11-1) = 2 * 4 * 10 = 80  
+8^82 = 8^80 * 8^2 = 8^파이(165) * 64 = 1*64 ≡ 64 (mod 165) 이다. 따라서 x=64이다.  
+
+a가 Prime인지 Test하는 방법에 대해 알아본다.  
+a보다 작은 prime number들로 나누어지는지 확인해보면 되는데.. 2부터 a까지 전부 확인할 필요 없다.  
+루트(a) 정도까지만 알아보면 된다.  
+물론 deterministic하고 polynomial(비교적효율적)인 primality test 알고리즘이 등장했었지만 (Agrawal-Kayal-Saxena primaility test)  
+시간 복잡도때문에 여전히 Miller-Rabin의 Test를 사용  
+
+### CRT (Chinese Remainder Therom)  
+x≡2(mod 3)이고, x≡3(mod 4)이고, x≡4(mod 5)를 만족하는 x를 찾는다면  
+무식하게 접근하면 2(mod 3)을 만족하는 모든 수를 쭉 찾고 겹치는 수를 찾으면 된다.  
+M=3x4x5=60이라 x≡11(mod 60)으로 나타낼수있는데, 어떻게?  
+
+M1=M/M1 = 3x4x5/60 = 20, M2=15, M3=12  
+ci = Mi * (Mi^(-1) mod mi)  
+A ≡ 시그마(aici) (mod M)  
+A= ((2(4x5)((4x5)^(-1) mod 3)) + (3(3x5)((3x5)^(-1)mod 4)) + (1(3x4)((3x4)^(-1) mod 5))) mod 60  
+= (-40 + -45 + -24) mod 60 = -109 mod 60 = -2(60)+11  
+따라서 11 mod 60 이다.  
+좌표 변환들이 오래 걸릴 수 있다.  
+따라서 연산이 매우 많은 경우에 주로 쓴다.  
+좌표에서의 연산이 더 빠르니까 변환과정에 시간을 좀 써도 더 시간절약이 되겠다 싶을때 사용.  
+
+<b>Cyclic Group</b>  
+수의 지수승일때 modulo 테이블이 있을 수 있는데,  
+이게 특정부분부터 순환되는 경우가 있다.  
+예를들어 modulo 19일 때 2의 지수승을 보면 2^1부터 2^18까지 mod 19 한 결과가 겹치지 않는다.  
+이런경우 2의 order는 18이라고 할 수 있다.  
+하지만 6의 경우엔 6^9까진 똑같은데 6^10부터 다시 6^1과 똑같은 결과가 나온다. 이런경우 6의 order는 9이다.  
+
+<b>The Discrete Logarithm Problem (DLP) : 이산로그문제</b>  
+y = g^x mod p  g^x = h?  
+
+## 9장  
+### 비대칭형 암호 (Public key Cryptiography)  
+Public-key Cryptography는 asymmetric cryptography (비대칭 암호화)로도 불린다.  
+사람 수와 선형적 관계로 증가하기에 키 관리가 용이함  
+대칭형 암호보다 장점 : 키 공개가 가능하고 키 개수가 적어서 관리가 쉽다.  
+
+왜 symmetric을 쓰냐면.. 비대칭형 암호보다 속도가 1000배가량 빠르다. 따라서 영화같은 큰 용량은 symmetric이 더욱 편리하다.  
+따라서 둘을 합쳐서 사용하는 Hybrid Encryption을 사용하기도 한다.  
+
+<b>Symmetric Cryptography(privatekey)</b>  
+- Confidentiality를 위한 Private-key encryption (AES)  
+- Integrity를 위한 Message authentication code (MAC)  
+
+<b>Asymmetric Cryptography(publickey)</b>  
+- Confidentiality를 위한 Public-key encryption (RSA-OAEP)  
+- Integrity를 위한 Digital Signature (RSA-PSS)  
+
+
+Public Key에서는 Key가 pk(잠그는 public key)와 sc(여는 secret key)가 있다.  
+encryption : c=E(pk, m) / decryption : m=D(sk, c)  
+
+public Key의 대표 예시인 RSA는 오일러의 정리를 기반으로 한다. m^파이(n) ≡ 1 (mod n)  
+그리고 ed ≡ 1(mod 파이(n)) 이면 모든 m에서  
+(m^e)^d ≡ m^ed ≡ m (mod n)을 만족한다.  
+n=pq으로 오일러 공식 파이(n)≡(p-1)(q-1)=|Zn*|  
+n의 소인수를 알면 (p,q) 계산이 가능하고 모르면 계산 못함. 이 원리로 비대칭이 가능해짐.  
+p,q알면 파이(n)알 수 있는데 모르면 문제 자체를 모르게됨  
+
+p,q를 뽑고 그걸로 n을 구하는 구조. ed≡1(mod 파이(n))  
+e를 prime number로 쓰거나, gcd가 1이 나올때까지 뽑거나.  
+
+### 공식  
+- Public key = (e,n) / Private Key = (d,n)  
+- 보내는 사람은 c=m^e mod n, 받는 사람은 m=c^d mod n  
+
+위에서 말했듯 여전히 대칭형을 쓰는 이유는 속도때문이다.  
+
+예시 : p=17, q=11을 뽑았으면, n=187이고.  
+파이(n) = 16x10 = 160이다.  
+ed ≡ 1 (mod 160)을 뽑음  
+e=7로 뽑았다면 Extended Euclidean Algorithm으로 d=23이라는 것을 알게 되었음.  
+
+e가 작으면 encryption은 짧지만 decryption이 클것임.  
+반대로 e가 크면 decryption이 짧을 것임  
+
+RSA-OAEP는 현실에서 사용하는 RSA임  
+Random number를 넣고 OAEP최적비대칭암호패딩 넣은걸로 지수 e승을 한것을 mod n 한다.  
+
+### Hybrid Encryption  
+서로 비대칭 암호를 통해 한번 쓰고 버리는 대칭키암호를 주고받고,  
+public key를 가지고 랜덤하게 뽑힌 AES키를 주고받은 뒤, 이 AES로 통신을 한다.  
+사전에 AES 키를 주고받기 위해 만나야하는 부담을 줄임  
+암호를 위한 키는 public key 방식으로 주고받고, 그 뒤에 보내는 큰 용량은 private key 방식으로 주고받는다. 다 끝나면 key는 버린다.  
+
+### Repeated Square-and-Multiply Algorithm  
+큰 지수승을 계산할 때 사용하는 방법  
+g^283이면 e=283=100011011(2) 이다.  
+g^256 * g^16 * g^8 * g^2 * g^1인데  
+값을 구한 것으로 그 위의 값들을 구하고.. 반복하는거라 log번으로 구할 수 있다. 근데도 AES보다는 느리다.  
+
+## 11장  
+Hash Function. 입력은 아무거나. 출력은 일정길이  
+입력개수는 상관없이 Hash Function 하나로 index를 게산하고 그 index에 값이 없으면 넣고, 있으면 (collision) 다른곳에 들어가도록 하는 hash function 사용  
+
+collision피하기 위해선 HashTable 크기가 큰게 좋긴하다. 하지만 메모리 용량 문제때문에 어렵다.  
+
+Birthday Attack  
+같은 생일인 사람이 같은 곳에 50% 확률로 있을 확률이 23명 이상부터 있다가 더 높다.  
+
+Hash 출력 길이가 n비트일때 이상적으로는 2^n의 보안성을 가져야하는데 Collision resistant가 2^(n/2)이기에 안전도가 실제론 반으로 줄어든다.  
+따라서 2배를 해준 Hash 256이 AES 128과 비슷한 안전도를 기대할 수 있다.  
+
+Preimage resistant 2^n  
+Second Preimage resistant 2^n  
+Collision resistent 2^(n/2)  
+
+### Hash Function의 이용  
+MD5 , SHA(Secure Hash Algorithm)  
+SHA는 버전에따라 SHA-0, SHA-1, ... SHA-3까지 있다.  
+0은 쓰인적 없음. SHA-1 -> 2는 길이를 늘린 것.  
+SHA-3는 224, 256, 384, 512가 사용가능하다. 2랑 구조는 같음.  
+
+SHA는 사용하려면 SHA-3이 적당하다. SHA3-256이 AES128과 비슷하다. SHA3-512가 AES-256과 비슷하다.  
