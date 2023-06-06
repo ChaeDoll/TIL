@@ -124,7 +124,7 @@ new xi = lowi + (highi-lowi)/(maxi-mini) * (xi-mini)
 여러개의 특징을 추출하였다면, 그 중에서 분류에 유용한 특징을 찾아내어 선택하는 것이 중요하다.  
 특징선택은 추출해낸 기존 특징벡터에서 **쓸모없거나**, **중복성이 강한**특징을 찾아 제거하는 작업이라고 할 수 있다.  
 이 과정으로 차원을 낮추어주고 그 덕에 계산속도 향상과 일반화 능력 증대효과를 기대할 수 있다.  
-<img src='./featureSelection.png' width='50%'>
+<img src='./FeatureSelection.png' width='50%'>
 
 ## 12주차  
 ## 13주차  
