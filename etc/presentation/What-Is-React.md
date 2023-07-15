@@ -14,7 +14,8 @@
 ## React를 사용한 예시
 - React는 Facebook에서 제공하는 프론트엔드 라이브러리인데, 이 말은 즉 facebook이나 instagram처럼 많은 이들이 사용하는 SNS커뮤니티 플랫폼에서 React를 사용하고 있다.  
 <img src="https://github.com/ChaeDoll/TIL/assets/108540812/8096aa21-418f-4b9a-868b-ea87a1b7c362" width="40%"> 
-<img src="https://github.com/ChaeDoll/TIL/assets/108540812/26538c6a-25b3-42bc-8fe1-cc3f0a226bda" width="40%">  
+<img src="https://github.com/ChaeDoll/TIL/assets/108540812/26538c6a-25b3-42bc-8fe1-cc3f0a226bda" width="40%">
+
 < 좌측은 뱅크샐러드(banksalad.com/) / 우측은 토스(toss.im) >
 
 ## React의 특징
