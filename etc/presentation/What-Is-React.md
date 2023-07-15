@@ -1,5 +1,5 @@
 # 리액트(React)란 무엇인가
-<img src="" width="40%">  
+<img src="https://github.com/ChaeDoll/TIL/assets/108540812/1de80cb2-024b-4c03-aa9a-53930e03b445" width="40%">  
 
 - 리액트(React)는 웹 프레임워크이다. 자바스크립트(javascript)의 라이브러리 중 하나인데, 사용자 인터페이스(UI)를 만들기 위해 사용한다.
 > 프레임워크? 라이브러리?  
@@ -27,7 +27,7 @@ State는 Component 내부에서 선언하며 내부에서 값 변경이 가능�
 - 그 외에도 데이터 바인딩 기법을 통한 여러정보를 모아서 보거나, 뷰포트 개념 덕에 스크롤링 효과 같은 시각적 부분에서 표현이 자유롭다. SPA(single page application) 방식 덕에 페이지 이동 없이 빠르게 콘텐츠를 제공할 수도 있다.
 
 ### React 문법 예시 (사용하는 방법 간단히)
-<img>  
+<img src="https://github.com/ChaeDoll/TIL/assets/108540812/4625cbbd-cfb7-4d80-a656-40bc394a21f8" width="60%">  
 
 
 ## React외의 다른 프레임워크
