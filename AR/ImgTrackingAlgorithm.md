@@ -1,3 +1,4 @@
+<!-- 2023/09/22 작성 -->
 # AR에서의 Image Tracking Algorithm
 ## AR Image Tracking의 원리
 - AR 초창기부터 자주 쓰이던 Image Tracking 기술. 
