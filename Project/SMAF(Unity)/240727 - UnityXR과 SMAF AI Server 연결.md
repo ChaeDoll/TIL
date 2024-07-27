@@ -12,3 +12,4 @@ PC에서 테스트할 때는 잘 작동하는데 Build만하면 작동하지 않
 알고보니 기존에 녹음한 audioData.wav파일을 www 객체의 SendWebRequest()를 사용하여 파일을 가져온 뒤 byte로 전환했었는데, Local에서 파일을 가져오는 System.IO.File 객체를 활용해서 파일을 가져오니 문제가 말끔히 해결되었다.
 #### 상자를 눌러 스마프 소환하기
 - [ ] 구현 완료
+상자를 누르면 스마프가 Instantiate가 된다. 그런데 상자를 없앨때도 같이 없어져야한다. Hierarchy에 있는 Smaf를 어
