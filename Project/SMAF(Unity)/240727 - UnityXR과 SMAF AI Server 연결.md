@@ -18,3 +18,6 @@ PC에서 테스트할 때는 잘 작동하는데 Build만하면 작동하지 않
 스마프에게 질문 후 답변을 받을 때 스마프 위에 떠있는 말풍선을 통해 답변받을 수 있음.
 Canvas는 Transform이 아닌, RectTransform이라는것을 알고있어야겠다.
 아무리해도 따라다니질 않네... 잘 구현하고싶다.
+
+bubbleCanvas = GameObject.Find("SMAF Bubble Canvas");
+여기가 문제이다. 나중에 해결하자!
