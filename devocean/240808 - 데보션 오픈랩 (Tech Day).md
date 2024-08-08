@@ -335,3 +335,7 @@ Kubeflow Notebooks는 웹 기반 개발환경 실행할 방법을 제공 유형 
 Kubeflow Pipeline은 KFP라고도함. SDK를 쓰고나 Yaml파일을 이용해 누구든 쉽게 pipeline구축가능. 시각화로 한번에 보기도좋음
 또 yaml파일말고도 Clinet를 생성하여 바로 확인가능
 
+Notebooks에서 코드를 작성하면 (Component를 작성 (함수를 컴포넌트로 정의)) 
+컴포넌트 작성 후, pipeline을 생성한 뒤, 파이프라인함수를 정의한다. 그 안에 위에서 작성했던 컴포넌트 함수들을 활용함. step1.output을 다른 애들의 입력값으로 넣을수있음.
+
+이제 yaml파일로 생성할수있다. 대시보드에서 CreatePipeline으로 이름 명시 및 
