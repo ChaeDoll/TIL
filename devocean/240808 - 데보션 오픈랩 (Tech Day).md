@@ -227,4 +227,15 @@ OpenAPI 규격에 맞게 API를 표준화하게되면, StubServer(더미서버)�
 결과적으로 Spec 파일로 API명세서 작성하여 효율적으로 운용 가능
 
 Spec파일이란,(Swagger Editor로 확인가능)
-먼저 openapi 사양, info에 문서기본정보기술, Server에 API서버들의 URL과 설명을 나열, 
+먼저 openapi 사양
+info에 문서기본정보기술
+Server에 API서버들의 URL과 설명을 나열
+tags
+paths는 각 경로에서의 HTTP메소드,요청,응답 정의
+components는 엔드포인트에 구성요소를 정의
+
+1) 먼저 OpenAPI Generator Install을 해야함
+2) 그리고 설치 말고 일회성으로 코드 생성하고 싶다면 Editor.swagger.io에서 spec파일을 import하여 Generate Client 탭으로 생성가능. (다양한 언어나 프레임워크 지원)
+3) 생성한 코드를 살펴보면 apis, models가 생성됨.
+4) Factory 패턴을 기반으로 SDK가 생성됨. 따라서 메소드 호출로 간편하게 API 연동이 가능하다. (하나의 메소드로 axios를 만들어주는 느낌?)
+5) ServerSide Generation은 어떻게 이루어지는가?
