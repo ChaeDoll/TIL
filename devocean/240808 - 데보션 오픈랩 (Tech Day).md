@@ -400,4 +400,10 @@ Q3. MLflow와 비교하여 장단점은? / A. 쿠베플로우가 좋은점은 �
 - 메모리 계층구조에 따른 속도.. Redis가 메모리를 사용하여 DB보다 빠르다. 무려 postgre보다 100만배? 그래서 cache layer를 도입하도록함..
 - 근데 또 cache서버가 하나라면 SPOF가 발생할 수 있다. 그래서 캐시도 여러대여야한다.
 - 분산된 캐시면 결국 문제가 생긴다. CAP정리 (Consistency, Availability, Partition Tolerance 모두만족하는건 불가능하다) Consistency는 언제나 같은 데이터를 바라봐야함. Availability는 언제든 반응할수있어야함. Partition tolerance는 두 노드 사이에 통신장애가 발생해도 시스템은 계속 동작해야함
-- 따라서 3개중 2개를 만족하는 DB들 종류가 있다. CP를 만족하는 redis, CA를 만족하는 D
+- 따라서 3개중 2개를 만족하는 DB들 종류가 있다. CP를 만족하는 redis, CA를 만족하는 DBMS, AP를 만족하는 어쩌구..
+- 여러개의 Cache server에 key값을 쓴다. 모든 서버에 데이터를 쓰게되면 좋을것같지만 성능이 저하된다. (trade off)
+- 그래서 Quorum Consensus를 사용하여 읽기 쓰기를 보장. 쿼럼이란 여러사람이 합의로 운영되는 의결되는... 최소인원
+- W는 쓰기연산에 대한 Quorum, R는 읽기 연산에 대한 Quoreum이다. N은 개수
+
+**Partition tolerance**
+네트워크 장애... 언제든 발생할 수 있다. s0과 s1이 정상인데 네트워크가 끊길수도있다. s0이 s1을 장애서버로 생각하게 할 수 도
