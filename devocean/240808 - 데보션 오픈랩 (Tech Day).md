@@ -247,4 +247,11 @@ components는 엔드포인트에 구성요소를 정의
 	4) Stub Server 코드 내에 Swagger UI가 적용되어 있기에 **실제 봐야하는 소스코드가 더러워지않음.**
 	
 **이로인해 어떻게 변화하였는지!**
-백엔드 개발자는 Spec파일 업데이트
+백엔드 개발자는 Spec파일 업데이트했다고 말하면, Client는 Spec파일로 SDK생성해서 작업한다고 할 수 있음. 정상 동작! 
+
+**실제 프로젝트 적용 후기**
+1) 리팩토링 적용. 기존 개발된 플랫폼은 레거시 코드 자바 버전 업그레이드.. 도메인 별 각기 다른 디자인 패턴 적용. 이미 작성된 API 명세서가 존재했다. 이걸 OpenAPI Spec으로 수정하고, OpenAPI Generator로 활용했다.
+2) 서비스 개발 중 특정 오픈소스와 연동하고자 하는 의견. REST API를 지원함을 확인. 오픈 소스 Repo구경 중 OpenAPI 규격의 Swagger Spec 파일이 있는것을 확인하여 이걸로 Client SDK 생성하여 개발을 진행하였음.
+
+파이프라인..
+- OpenSource Repository가 있음. Pulling하고있다가 Clone이 되면 SDK를 생성하여 
