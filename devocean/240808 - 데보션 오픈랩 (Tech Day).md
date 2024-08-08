@@ -290,3 +290,6 @@ Q5. 클라이언트에서 여러개 API를 사용하면 Spec파일이 여러개 
 FunctionCalling은 사용할수있는 쿼리를 정리하여 ?
 
 랭체인에서 가져오고 주석으로 어떤역할하는지, 값은 어떻게 나오는지 정확히 입력
+
+Prompt Engineering + persona, constraints, few shot
+하지만 완벽하지 않았고, RunnableWithMessageHistory. 메세지 객체를 보면 HumanMessage, AIMessage, ToolMessage를 지켜야했다. 상단에 사람의 메세지가 입력되고, AI메세지가 각각의 가격을 가져오고 함수를 불러오고..., ToolMessage는 
