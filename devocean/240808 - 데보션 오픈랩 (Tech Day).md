@@ -337,5 +337,9 @@ Kubeflow Pipeline은 KFP라고도함. SDK를 쓰고나 Yaml파일을 이용해 �
 
 Notebooks에서 코드를 작성하면 (Component를 작성 (함수를 컴포넌트로 정의)) 
 컴포넌트 작성 후, pipeline을 생성한 뒤, 파이프라인함수를 정의한다. 그 안에 위에서 작성했던 컴포넌트 함수들을 활용함. step1.output을 다른 애들의 입력값으로 넣을수있음.
+이제 yaml파일로 생성할수있다. 대시보드에서 CreatePipeline으로 이름 명시도 가능.
 
-이제 yaml파일로 생성할수있다. 대시보드에서 CreatePipeline으로 이름 명시 및 
+이제 잘 실행되어 생성되었다면, UI적으로 어떻게 값이 연결되어 들어가고있고... 그 통과당시 값은 몇이고.. 등 확인할 수 있음
+
+**Training Operator**
+ML모델의 미세조정(파인)
