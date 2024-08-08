@@ -46,3 +46,13 @@ sub/second-level/top-level/root 순서이다.
 **ipconfig/displaydns** : dns정보 확인가능
 **ipconfig/flushdns** : 기존 로컬 DNS캐시를 비우고 새로운 도메인 정보를 가져올 수 있음 
 
+Local에서 DNS 서버 요청을 보내고, DNS에서 해당 주소를 Root, Top-name, Cloud 순서로 탐색한다?
+
+Local 캐시에 저장이 되어있는지 확인하고, 있다면 DNS서버는 바로 해당 웹사이트를 전달하고, DNS서버에서 해당 도메인 정보가 없다면 루트네임-탑레벨도메인-클라우드 순서로 
+.com / example.com / blog.example.com 인가?
+
+DNS 동작방식은 TTL과 DNS
+- TTL이 짧을수록 도메인이 바뀌었을 때 이를 PC가 알아차리는 속도가 빠르다. 업데이트시에는 TTL설정을 짧게하고, 자주바뀌지 않는 도메인이면 TTL을 길게 변경할 수 있다.
+- 하지만 쿼리를 자주해야하기에 DNS 서버에 부하가 증가한다. TTL이 길면 쿼리 자주 안해도 되지만 도메인 정보가 바뀌었을때 이를 알아차리지못함
+
+**DNS 도멩**
