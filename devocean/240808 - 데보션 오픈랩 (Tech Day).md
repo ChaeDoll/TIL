@@ -219,4 +219,12 @@ Swagger를 기반으로 나온것이 바로 OPENAPI 이다. HTTP API를 위한 �
 기존의 Swagger Specification이 정착한것에서 OpenAPI가 시작되었음.
 - 표준화 된 포맷 (JSNO 또는 YAML)
 - 특정 언어나 프레임워크에 종속되지 않음 (유연성)
-- 코드 생성 - 
+- 코드 생성 - **OpenAPI Generator**. 표준에 맞게 명세서를 만들어준다.
+
+**OpenAPI Generator란?**  
+OpenAPI 규격에 맞게 API를 표준화하게되면, StubServer(더미서버)를 생성할 수 있고, Client SDK로 자동으로 생성해줌. API를.. 더 쉽게. 메소드 형태로 API를 호출할 수 있음.
+예시응답 또한 더미 Response로 자동 생성해준다.
+결과적으로 Spec 파일로 API명세서 작성하여 효율적으로 운용 가능
+
+Spec파일이란,(Swagger Editor로 확인가능)
+먼저 openapi 사양, info에 문서기본정보기술, Server에 API서버들의 URL과 설명을 나열, 
