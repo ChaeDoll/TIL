@@ -586,12 +586,15 @@ ReRank : Context 유사도 계산을 통해 재정렬하여 전달 (하지만 �
 - 프롬프트는 LangChain Hub
 - 한글 형태소 처리는 Kiwi, 꼬꼬마?
 
-Advanced RAG를 적용한 구성요소...
+**Advanced RAG를 적용한 구성요소...**
 - 임베딩은 HuggingFace Embedding을 사용했다. BAAI/be-m3라는 모델 사용
 - CPU 사용
 - 정규화embedding True
 - Nomalize_embedding 이점은 단순화된계산, 유사도계산용이, 크기무관성, 수치안정성, 성능향상
-
 - Kiwi적용 - LLM은 영어를 Base로 하는 모델인데 한글어 형태소 적용하여 한글에 맞게 tokenize 과정 진행
 - Chunk - 각 기능 및 문서의 특징에 맞게 사이즈와 Overlap 변수 지정이 필요 (overlap이란 청크누었을때 겹치는 부분. 문서간 index를 하여 겹치는부분인것을 확인)
-- Hybrid Search (앙상블 리트리버) - 2개의 리트리버를 조합
+- Hybrid Search (앙상블 리트리버) - 2개의 리트리버를 조합하여 최적의 결과를 도출. 여기선 Sparse와 Dense조합을 이용하였음. SearchType은 MMR을 하였음 => 문서가 좀 더 다양하게 뽑히도록하는것. 가중치의 합이 1.0이 넘지않게 하면된다.
+- ReRank : 위에서 가져온 Context 재정렬.
+- Prompt : 프롬프트는 RAG에서 중요하다. 명확하게 표시해야한다. **한글로 질문해도 명확한 프롬프트가 아니면 영어로 답변**한다. 명확하게 한국어로 답변하라는것 없으면 한문 섞여나오는경우도있었다.
+- 프롬프트로 이전답변에 대한 추가 질문을사용하도록..?
+- 모델 : llama 3.1사용. Temperature옵션은 0을 사용하여 답변에 대한 창
