@@ -511,4 +511,13 @@ struct와 trait를 이용한 다형성 제공. 클로저, map, filter, fold같�
 - FFI (Foreign Function Interface) - 다른언어 갖다 쓸수있게 되어있음
 **단점**
 - 빌드가 오래걸린다. 컴파일에서 모든 검사를 해야해서 그럼
-- 
+- 높은 진입장벽 - 어려운 개념을 잘 알아야한다. 아니면 빌드가안된다.
+- unsafe - Rust에서는 핵심이라고 소개하지만 사실상 unsafe쓰면 C++과 다를게없다. unsafe쓰면 그냥 C++이랑 뭐가다르냐
+**마무리로..**
+C++과 Rust모두 각각 장점과 개성이 있다.
+Rust는 C++의 대안이 되나? java-kotlin, objectiveC-swift, C-C++, C++-Rust 장점이 있다고 하지만 결국 다 쓰잖아? 그러듯 쓰일것같다.
+
+Rust나 C++의 미래는 AI생태계인 특성상 Python성능 이슈가 조금씩 부각되고있다. 따라서 대안이 될 수 있을것같다. 
+Rust가 성능이 좋으니 WebAssembly, EmbeddedSystem과같은 애들 모두 Rust가 대세가 되지않을까..
+
+C++은
