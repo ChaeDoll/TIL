@@ -328,5 +328,10 @@ Pipeline은 Kubeflow Pipeline
 Notebooks는 Kubeflow Notebooks(쥬피터노트북, vscode로 사용가능)
 Dashboard
 AutoML
-Model Training
-Model Serving : ㅏ
+Model Training : KubeflowTraining Operator
+Model Serving : KServe로 API로 쉽게
+
+Kubeflow Notebooks는 웹 기반 개발환경 실행할 방법을 제공 유형 및 패키지는 Docker 이미지로 선택 가능
+Kubeflow Pipeline은 KFP라고도함. SDK를 쓰고나 Yaml파일을 이용해 누구든 쉽게 pipeline구축가능. 시각화로 한번에 보기도좋음
+또 yaml파일말고도 Clinet를 생성하여 바로 확인가능
+
