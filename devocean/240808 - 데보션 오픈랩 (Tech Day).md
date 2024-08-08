@@ -583,4 +583,15 @@ ReRank : Context 유사도 계산을 통해 재정렬하여 전달 (하지만 �
 - ragas
 - AutoRAG
 **기타**
-- 프롬프트는 La
+- 프롬프트는 LangChain Hub
+- 한글 형태소 처리는 Kiwi, 꼬꼬마?
+
+Advanced RAG를 적용한 구성요소...
+- 임베딩은 HuggingFace Embedding을 사용했다. BAAI/be-m3라는 모델 사용
+- CPU 사용
+- 정규화embedding True
+- Nomalize_embedding 이점은 단순화된계산, 유사도계산용이, 크기무관성, 수치안정성, 성능향상
+
+- Kiwi적용 - LLM은 영어를 Base로 하는 모델인데 한글어 형태소 적용하여 한글에 맞게 tokenize 과정 진행
+- Chunk - 각 기능 및 문서의 특징에 맞게 사이즈와 Overlap 변수 지정이 필요 (overlap이란 청크누었을때 겹치는 부분. 문서간 index를 하여 겹치는부분인것을 확인)
+- Hybrid Search (앙상블 리트리버) - 2개의 리트리버를 조합
