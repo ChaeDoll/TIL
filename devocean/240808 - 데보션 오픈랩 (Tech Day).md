@@ -300,3 +300,7 @@ Prompt Engineering + persona, constraints, few shot
 기본 10=>15, toolmessage 절사할때 대략 2~3.
 그러니 Pair Rule에 위배되지 않는다.
 
+차기LENS 방향은 대형스키마 고나리, 인덱스 최적화, DB성능개선전략 / 애널리틱스를 위한 기초통계, 사용자별과 부서별 통계, 비용 계산
+
+**질의응답**
+Q1. 
