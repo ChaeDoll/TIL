@@ -238,4 +238,13 @@ components는 엔드포인트에 구성요소를 정의
 2) 그리고 설치 말고 일회성으로 코드 생성하고 싶다면 Editor.swagger.io에서 spec파일을 import하여 Generate Client 탭으로 생성가능. (다양한 언어나 프레임워크 지원)
 3) 생성한 코드를 살펴보면 apis, models가 생성됨.
 4) Factory 패턴을 기반으로 SDK가 생성됨. 따라서 메소드 호출로 간편하게 API 연동이 가능하다. (하나의 메소드로 axios를 만들어주는 느낌?)
-5) ServerSide Generation은 어떻게 이루어지는가?
+5) **ServerSide Generation은** 어떻게 이루어지는가? Spec파일을 기반으로 프로젝트 빌드 시, Stub Server 코드가 생성됨. 코드 내부엔 Swagger관련 Annotation과 default 컨트롤러 interface 생성해주고, 예시응답 생성
+6) 인터페이스로 이제 생성이 된 코드를 어떻게 사용? Override 후 비즈니스 로직을 삽입하면 된다.
+7) **그래서 왜 코프링 컨트롤러가 필요하지 않는지...**
+	1) Stub Server 코드 생성으로 직접적인 컨트롤러 개발이 필요없음
+	2) 생성된 컨트롤러 부분의 코드를 Override 받아 작성
+	3) 컨트롤러 부분을 Override하여 구성하기때매 비즈니스 로직에 집중가능
+	4) Stub Server 코드 내에 Swagger UI가 적용되어 있기에 **실제 봐야하는 소스코드가 더러워지않음.**
+	
+**이로인해 어떻게 변화하였는지!**
+백엔드 개발자는 Spec파일 업데이트
