@@ -342,4 +342,11 @@ Notebooks에서 코드를 작성하면 (Component를 작성 (함수를 컴포넌
 이제 잘 실행되어 생성되었다면, UI적으로 어떻게 값이 연결되어 들어가고있고... 그 통과당시 값은 몇이고.. 등 확인할 수 있음
 
 **Training Operator**
-ML모델의 미세조정(파인)
+ML모델의 미세조정(파인튜닝) 및 분산학습을 위한 Kubernetes 기반 프로젝트임
+**Katib**
+AutoML을 위한 Kubernetes 기반 프로젝트
+하이버파라미터 튜닝, Early Stopping, Neural Architecture Search(NAS)를 지원
+Api로도 사용이 가능하게 됨. Best Trial's params를 알 수 있게 된다. (learning rate와 epoc을 원해서 알 수 있었음) loss랑 accuracy를 확인할수도 있다.
+
+이제 모델을 Serving하기 위한 KServe를 사용할 수 있다. 서버리스 배포를 제공한다. 자동확장도 되고, 네트워크 살아있는지 확인여부도 가능함. 만들어진 모델을 가져와 사용하기에 지원하는 Storage는 전체적인 형태를 지원하고있다. 쉽게 배포가 가능함
+
