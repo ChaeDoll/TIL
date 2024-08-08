@@ -62,4 +62,10 @@ DNS 동작방식은 TTL과 DNS
 **NAT란? Network Address Translation**
 - 사설IP에서 공인IP로, 사설 IP에서 사설IP로, 공인IP에서 공인IP로 모두 NAT이다.
 - 가정에서 인터넷을 사용하는 경우가 대표적인 예시이다. (공유기를 통함)
-- 
+- 인터넷 공유기는 IP와 포트번호를 활용해서 SourceIP/Port 와 Destination IP/Port를 변환하는 테이블을 형성하여 사설주소를 갖는 컴퓨터의 네트워크를 공인IP로 활용하도록 할 수 있는 것.
+**AWS에서의 SourceNAT, DestinationNAT**
+- 프라이빗 서브넷인 EC2는 외부통신이 막혀있다. 따라서 NAT를 통해(SourceNAT) 외부 망에 연결하는 것이다.
+- 로드밸런서를 이용하여 공인IP가 없는 EC2에 도달할 수 있도록 하는 것이 DestinationNAT이다.
+**NAT와 방화벽**
+- 개발 업무 하다보면 방화벽 신청을 할 때가 있는데, 연결이 되 안되다 할 때가 있다.
+- 사내 NAT IP를 미리 파악해서 신청ㅎ
