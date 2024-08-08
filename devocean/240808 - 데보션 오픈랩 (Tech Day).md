@@ -394,4 +394,10 @@ Q3. MLflow와 비교하여 장단점은? / A. 쿠베플로우가 좋은점은 �
 - DB 두개에서 한대는 CUD, 다른한대를 R만해서 (CRUD중에) 해결했다. 
 **근데 더더욱 성장한다면?**
 - Read는 위에서 개선했는데 CUD작업은 개선되지 못했다 아직.
-- 복제된 DB에서 Read를 한다는건 좋다. 근데 결국 CUD는 한곳에서 하는데, 그로인해 CUD되지않아 Read안되는 문제가 생길수있다. 
+- 복제된 DB에서 Read를 한다는건 좋다. 근데 결국 CUD는 한곳에서 하는데, 그로인해 CUD되지않아 Read안되는 문제가 생길수있다. 그래서 순서를 사이사이 껴서 진행? (샤딩?)
+
+**Key-value Store**
+- 메모리 계층구조에 따른 속도.. Redis가 메모리를 사용하여 DB보다 빠르다. 무려 postgre보다 100만배? 그래서 cache layer를 도입하도록함..
+- 근데 또 cache서버가 하나라면 SPOF가 발생할 수 있다. 그래서 캐시도 여러대여야한다.
+- 분산된 캐시면 결국 문제가 생긴다. CAP정리 (Consistency, Availability, Partition Tolerance 모두만족하는건 불가능하다) Consistency는 언제나 같은 데이터를 바라봐야함. Availability는 언제든 반응할수있어야함. Partition tolerance는 두 노드 사이에 통신장애가 발생해도 시스템은 계속 동작해야함
+- 따라서 3개중 2개를 만족하는 DB들 종류가 있다. CP를 만족하는 redis, CA를 만족하는 D
