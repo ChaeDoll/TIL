@@ -254,4 +254,8 @@ components는 엔드포인트에 구성요소를 정의
 2) 서비스 개발 중 특정 오픈소스와 연동하고자 하는 의견. REST API를 지원함을 확인. 오픈 소스 Repo구경 중 OpenAPI 규격의 Swagger Spec 파일이 있는것을 확인하여 이걸로 Client SDK 생성하여 개발을 진행하였음.
 
 파이프라인..
-- OpenSource Repository가 있음. Pulling하고있다가 Clone이 되면 SDK를 생성하여 
+- OpenSource Repository가 있음. Pulling하고있다가 Clone이 되면 SDK를 생성하여 Nexus에 Publish했고, 개발자는 SDK를 가져와 작업하면 깔끔??
+
+**질의응답**
+Q1.구체적으로. A. 데보션서버 소스가 어떤지 고민할 필요없이 Spec파일을 import하고 자바라이브러리로 뽑아내서 Maven에 넣어주었다. 그러면 메소드만 호출하고 파라미터만 넣으면 자동으로 됐다? 시간 절약에 좋았다.
+Q2. 코파일럿 연동하는 방법도 있을까요? A. 
