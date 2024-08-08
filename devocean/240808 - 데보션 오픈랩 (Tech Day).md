@@ -293,3 +293,10 @@ FunctionCalling은 사용할수있는 쿼리를 정리하여 ?
 
 Prompt Engineering + persona, constraints, few shot
 하지만 완벽하지 않았고, RunnableWithMessageHistory. 메세지 객체를 보면 HumanMessage, AIMessage, ToolMessage를 지켜야했다. 상단에 사람의 메세지가 입력되고, AI메세지가 각각의 가격을 가져오고 함수를 불러오고..., ToolMessage는 
+...?
+가장 먼 과거, 과거, ... 과거, 가장 가까운 과거 이렇게 History를 10개로 가장 앞부터 10개를 사용하려했는데, Pair Rule이 지켜지지 않았다. 
+
+항상 마지막은 AI메세지거나 Toolmessage로 끝남. Pair Rule이 적용되는것은 ToolMessage뿐이다. Toolmessage아닌메세지 만나면 그 즉시 자른다.
+기본 10=>15, toolmessage 절사할때 대략 2~3.
+그러니 Pair Rule에 위배되지 않는다.
+
