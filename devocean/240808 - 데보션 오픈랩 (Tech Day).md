@@ -148,7 +148,12 @@ Q12. 한번 질문시 최대 토큰은? 그래프 길어지면 토큰도 클것�
 # 3) AI Travel Agent, Travel GO
 **여행서비스 스타트업 팀장 : 김하림**
 여행준비를 Agent로 해결? 왜 Agent로..?
-
-LLMOps란? Large Language Model + Operations
+**LLMOps란?** Large Language Model + Operations
 - LLM이 들어간 서비스인데, 처음부터 끝까지 고객한테 전달하고 관리하는 파이프라인을 구축하는것.
-- 많은것을 공부해야하는데, RAG, Testing, Fine-tunning, Promp 
+- 많은것을 공부해야하는데 RAG, Testing, Fine-tunning, Promp Engineering, Cost Optimization, Monitoring&Observability, Evaluation Metrics 등등...
+공부에만 그치지 말고 실제 서비스를 만들어보고자 하였다.
+
+**여행준비 왜 어렵나?**
+단계가 정말 복잡하다... 쉽고 간단하지 않다.
+- 완벽하고 싶은 욕구 - 여행가면 돈도들고 시간도 든다. 그렇게 제한된 자원에서 완벽하고 행복한 여행을 하고싶은 욕심이 크기 때문이다.  (가고싶은곳과 하고싶은일은 무궁무진) 이를 위해 조사를하는데, 점점 정보가 늘어난다.
+- 많은 고객들이 여행 계획을 **노동**처럼 느낀다고 한다. 무려 16~20시간을 사용한다
