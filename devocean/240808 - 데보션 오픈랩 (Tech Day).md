@@ -561,4 +561,26 @@ HyDE : LLM을 통해 가상의 답변을 생성하고 이를 이용. (문서로 
 ReRank : Context 유사도 계산을 통해 재정렬하여 전달 (하지만 시간복잡도가 늘어날수있기에 적절하지않다고 생각하심)
 
 12주동안 AdvancedRag를 어떻게 만들었는지..
-**사용한 툴** : RAG를 커스텀하여 low단계부터하면 좋겠지만 ㄱ
+**사용한 툴** : RAG를 커스텀하여 low단계부터하면 좋겠지만 그렇게하기엔 많은 어려움이 따른다.
+따라서 프레임워크나 벡터DB같은것을 사용한다.
+- haystack -  
+- LlamaIndex - RAG에 특화됨. (RAG하나만 만들겠다)
+- LangChain - 좀 더 커뮤니티가 더욱 활성화됨 (여러 RAG만들겠다)
+
+**모델 Serving**
+- OLLAMA - 사용하기 더 쉬움
+- VLLM - 성능이 더 좋음
+**모델**
+- Meta의 Llama3.1B
+- Qwen2
+- Gemma
+**벡터DB**
+- chroma
+- Milvus
+- Pinecone
+- OpenSearch 등
+**평가**
+- ragas
+- AutoRAG
+**기타**
+- 프롬프트는 La
