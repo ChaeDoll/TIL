@@ -313,4 +313,20 @@ Q5. 가장 좋았던부분, 힘들었던 부분? / A. 수원에 사는데 올때
 ## 6) Kubeflow 알아보기
 **김예은**
 여러가지 경험으로 성장하는 개발자.
-쿠버네티스, 코버
+쿠버네티스, 쿠베플로우
+
+세가지목차.
+Kubeflow란? Kubeflow 구성요소, MLOps
+
+Kubeflow란? Kubernetes + ML Workflow 합친것.
+개발자, 데이터사이언티스트, ML엔지니어 등 모두가 모델 구축부터 테스트 배포...
+
+어떻게 사용하는것?
+**Kubeflow는 ML에 특화된 Workflow**이다.
+6개의 컴포넌트들..
+Pipeline은 Kubeflow Pipeline
+Notebooks는 Kubeflow Notebooks(쥬피터노트북, vscode로 사용가능)
+Dashboard
+AutoML
+Model Training
+Model Serving : ㅏ
