@@ -350,3 +350,10 @@ Api로도 사용이 가능하게 됨. Best Trial's params를 알 수 있게 된�
 
 이제 모델을 Serving하기 위한 KServe를 사용할 수 있다. 서버리스 배포를 제공한다. 자동확장도 되고, 네트워크 살아있는지 확인여부도 가능함. 만들어진 모델을 가져와 사용하기에 지원하는 Storage는 전체적인 형태를 지원하고있다. 쉽게 배포가 가능함
 
+모델 목록, 모델 상태, 예측, 예측설명도 get이나 post 요청으로 할 수 있음.
+
+**이렇게 전체적인 Kubeflow를 살펴봤는데, 그러면 왜 이런 Kubeflow가 ML에 특화됨?**
+Kubeflow는 pipeline으로 관리하여 pipelines, katib, Kserve 간단히 올리고 post요청으로 가져오는것까지 했었음. 
+
+**질의응답**
+Q1. 
