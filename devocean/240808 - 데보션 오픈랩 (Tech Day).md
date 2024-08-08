@@ -28,7 +28,21 @@ LLMEdubank
 TGO(Travel GO)
 직접 참여해봅시다.
 
-## 개발자가 알아야 할 NAT, DNS
-**인프라 엔지니어 : 고재민**
+# 목차
+1) 개발자가 알아야 할 NAT, DNS
+2) 
 
-우리 포트포워딩 못해서 힘들었자나 그 포트포워딩이 NAT쪽이야 
+## 1) 개발자가 알아야 할 NAT, DNS
+**인프라 엔지니어 : 고재민**
+DNS 동작방식과 도메인 위임, NAT 동작방식과 방화벽.. 
+#### DNS란? Domain Name Service
+- 사람이 읽을수있는 도메인 이름을 컴퓨터가 읽을 수 있는 IP주소로 변환하는 것.
+- 클라우드 기반 인프라 구성이 많아지며 인프라가 빈번히 변경되어 DNS를 이용한 시스템 설계가 중요해지고 있음
+- IP를 이용한것보다 도메인으로 많이 하고있음 (IP는 자주 변경될수있으니..)
+
+blog. example. com.은
+sub/second-level/top-level/root 순서이다.
+
+**ipconfig/displaydns** : dns정보 확인가능
+**ipconfig/flushdns** : 기존 로컬 DNS캐시를 비우고 새로운 도메인 정보를 가져올 수 있음 
+
