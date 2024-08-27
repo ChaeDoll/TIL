@@ -14,4 +14,6 @@
 	- [Small Red Dragon](https://assetstore.unity.com/packages/3d/characters/small-red-dragon-52959)
 	- [Toon Fox](https://assetstore.unity.com/packages/3d/characters/animals/toon-fox-183005)
 - 새로운 SMAF 방
+	- [Lowpoly Environment - Nature Free - MEDIEVAL FANTASY SERIES](https://assetstore.unity.com/packages/3d/environments/lowpoly-environment-nature-free-medieval-fantasy-series-187052)
+	- [Mega Fantasy Props Pack](https://assetstore.unity.com/packages/3d/environments/fantasy/mega-fantasy-props-pack-87811)
 - 튜토리얼 및 미니게임에 활용할 UI 및 Object
