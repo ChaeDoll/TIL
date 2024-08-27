@@ -17,4 +17,5 @@
 	- [Lowpoly Environment - Nature Free - MEDIEVAL FANTASY SERIES](https://assetstore.unity.com/packages/3d/environments/lowpoly-environment-nature-free-medieval-fantasy-series-187052)
 	- [Mega Fantasy Props Pack](https://assetstore.unity.com/packages/3d/environments/fantasy/mega-fantasy-props-pack-87811)
 - 튜토리얼 및 미니게임에 활용할 UI 및 Object
+	- 옵션, 튜토리얼 등 GUI 갯
 	- 운동회가 생각난다. 박터트리기?
