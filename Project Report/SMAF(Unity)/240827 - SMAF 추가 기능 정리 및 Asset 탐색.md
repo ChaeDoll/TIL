@@ -11,6 +11,9 @@
 ## Asset 탐색
 - 새로운 SMAF 외형 (모델)
 	- [Quirky Series - FREE Animals Pack](https://assetstore.unity.com/packages/3d/characters/animals/quirky-series-free-animals-pack-178235)
+		- 참새 모델링
+		- 참새 방 배경음악 - [On the Farm (Free Music)](https://assetstore.unity.com/packages/audio/music/rock/on-the-farm-free-music-221746)
+		- 참새 방 모델 - [KHS - Naganeupseong Walled Town, Suncheon](https://assetstore.unity.com/packages/3d/props/khs-naganeupseong-walled-town-suncheon-272025)
 	- [Small Red Dragon](https://assetstore.unity.com/packages/3d/characters/small-red-dragon-52959)
 	- [Toon Fox](https://assetstore.unity.com/packages/3d/characters/animals/toon-fox-183005)
 - 새로운 SMAF 방
