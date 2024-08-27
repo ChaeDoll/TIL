@@ -23,4 +23,6 @@
 		- [Otoh's Fruit Box](https://assetstore.unity.com/packages/3d/props/food/otoh-s-fruit-box-274072)
 		- [Rock and Boulders 2](https://assetstore.unity.com/packages/3d/props/exterior/rock-and-boulders-2-6947)
 		- [3D model Pack Baskets](https://assetstore.unity.com/packages/3d/props/interior/3d-model-pack-baskets-157025)
-	- 
+	- 총쏘기, 단검 던지기
+		- [Weapons FREE - Low Poly Asset Pack by ithappy](https://assetstore.unity.com/packages/3d/props/weapons/weapons-free-low-poly-asset-pack-by-ithappy-260492)
+		- 
