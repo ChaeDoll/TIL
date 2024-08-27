@@ -10,5 +10,7 @@
 
 ## Asset 탐색
 - 새로운 SMAF 외형 (모델)
+	- [Quirky Series - FREE Animals Pack](https://assetstore.unity.com/packages/3d/characters/animals/quirky-series-free-animals-pack-178235)
+	- []()
 - 새로운 SMAF 방
 - 튜토리얼 및 미니게임에 활용할 UI 및 Object
