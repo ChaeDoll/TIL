@@ -6,5 +6,4 @@
 4) 튜토리얼 개선 - ☆☆★★★ (XR)
 5) VR 방 미니게임 추가 - ☆☆☆☆★ (XR)
 
-## 일정
 ![![TIL/Project Report/SMAF(Unity)/#*Table2]]** ****
