@@ -20,3 +20,5 @@
 	- 옵션, 튜토리얼 등 GUI 개선
 		- [Hyper casual mobile GUI](https://assetstore.unity.com/packages/2d/gui/hyper-casual-mobile-gui-268659)
 	- 운동회가 생각난다. 박터트리기?
+		- [Otoh's Fruit Box](https://assetstore.unity.com/packages/3d/props/food/otoh-s-fruit-box-274072)
+		- 
