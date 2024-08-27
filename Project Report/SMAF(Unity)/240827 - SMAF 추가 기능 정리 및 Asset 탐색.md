@@ -26,3 +26,5 @@
 	- 총쏘기, 단검 던지기
 		- [Weapons FREE - Low Poly Asset Pack by ithappy](https://assetstore.unity.com/packages/3d/props/weapons/weapons-free-low-poly-asset-pack-by-ithappy-260492)
 		- [Military target](https://assetstore.unity.com/packages/3d/environments/military-target-136071)
+	- 활쏘기
+		- [Archery Pack](https://assetstore.unity.com/packages/3d/props/archery-pack-258041)
