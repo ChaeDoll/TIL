@@ -5,7 +5,6 @@
 3) 외형, 목소리 (TTS) 추가 - ☆★★★★ (AI&Server, XR)
 4) 튜토리얼 개선 - ☆☆★★★ (XR)
 5) VR 방 미니게임 추가 - ☆☆☆☆★ (XR)
-
 ![![TIL/Project Report/SMAF(Unity)/#*Table2]]
 
 ## Asset 탐색
