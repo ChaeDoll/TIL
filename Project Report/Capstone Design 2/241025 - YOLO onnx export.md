@@ -15,4 +15,7 @@ Unity Barracuda라는 라이브러리가 상대적으로 예전 라이브러리�
 최근에는 Unity Sentis라는 AI 라이브러리가 존재하고, 여기서 이 문제를 해결해보고자 하였다.
 
 com.unity.sentis 라는 name으로 Package를 다운로드한다. Barracuda는 지웠다.
+![[Pasted image 20241025192713.png]]
+모델이 잘 import 되는것을 확인할 수 있다!
+
 
