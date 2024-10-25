@@ -18,4 +18,4 @@ com.unity.sentis 라는 name으로 Package를 다운로드한다. Barracuda는 �
 ![[Pasted image 20241025192713.png]]
 모델이 잘 import 되는것을 확인할 수 있다!
 
-
+이제 코드를 작성해서 모델을 가져오고, 입력 이미지를 
