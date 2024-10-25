@@ -21,7 +21,7 @@ com.unity.sentis 라는 name으로 Package를 다운로드한다. Barracuda는 �
 이제 코드를 작성해서 모델을 가져오고, 입력 이미지를 3(rgb)x640x640 형태로 변경한다.
 이후 Worker에서 모델을 생성하고, worker.Schedule(입력데이터)를 통해 입력 Tensor를 넣어 실행한다. Execute와 같은것이다.
 
-결과 Tensor은 worker.P
+결과 Tensor은 worker.PeekOutput()으로 뽑아올 수 있다.
 
 ```
 using System.Collections;
