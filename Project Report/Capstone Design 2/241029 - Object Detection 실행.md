@@ -7,4 +7,6 @@ Worker.PeekOutput(index)으로 multiple outputs를 다룰 수 있다고 한다. 
         var json = result.Serialize().json;
     라는 메소드를 작성해보니, json 형태의 결과물을 얻을 수 있게 되었다.
 유니티 Console에는 출력에 제한이 있기에 해당 데이터를 txt 메모장 파일로 저장시켰다.
+![[Pasted image 20241029182459.png]]
+컴이 죽었다...
 
