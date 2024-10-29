@@ -10,3 +10,7 @@ Worker.PeekOutput(index)으로 multiple outputs를 다룰 수 있다고 한다. 
 ![[Pasted image 20241029182459.png]]
 컴이 죽었다...
 
+현재 Output의 Tensor의 size가 Float(1, 84, 8400) 이다.
+한개 사진에 대해 84개의 클래스로 분류되어 값이 8400개 있는 것을 판단하였다. (?) 맞나
+
+값들이 규칙성이 있다. 분명... x
