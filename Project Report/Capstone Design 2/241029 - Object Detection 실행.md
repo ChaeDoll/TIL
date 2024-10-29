@@ -19,3 +19,7 @@ Worker.PeekOutput(index)으로 multiple outputs를 다룰 수 있다고 한다. 
 https://jseobyun.tistory.com/562
 onnx 변환은 해주지만 NMS가 빠진상태로 변환하고 있는 상황이 딱 내 상황이었다.
 원래는 bounding box 정보와 class 별 confidence를 나타내는 N x (4+C) 형태여야하는데 (4 + C) x 8400같은 이상한 Dimension 결과가 나온다.ㄴ
+
+우선 Transpose해주었다. 그리고 결과를 출력하니, 
+15.1, 3.81, 30.48, 7.73 그리고 80개의 0.000어쩌구...들이 나왔다. 이것은 4개의 xywh과 80개의 클래스에 대한 score라고 생각했다.
+
