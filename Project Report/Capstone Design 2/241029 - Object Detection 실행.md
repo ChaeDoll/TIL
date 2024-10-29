@@ -3,3 +3,8 @@
 Worker.PeekOutput(index)으로 multiple outputs를 다룰 수 있다고 한다. 실제로 PeekOutput(1)처럼 index를 넣었는데, 출력 index가 1개라고 나타났다. 왜일까... 분명 여러가지 output을 얻어야하는데..
 
 다양한 것들을 사용하고 얻은것은...
+        var result = outputTensor.DownloadToArray();
+        var json = result.Serialize().json;
+    라는 메소드를 작성해보니, json 형태의 결과물을 얻을 수 있게 되었다.
+유니티 Console에는 출력에 제한이 있기에 해당 데이터를 txt 메모장 파일로 저장시켰다.
+
