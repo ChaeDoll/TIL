@@ -16,3 +16,6 @@ Worker.PeekOutput(index)으로 multiple outputs를 다룰 수 있다고 한다. 
 값들이 규칙성이 있다. 분명... x쭈루룩, y쭈루룩, mask 쭈루룩..이렇게 되어있을 가능성이 크다.
 규칙을 찾던 중, 확실한 탐색을 위해 파이썬에서 yolo11n.pt  모델을 실행해보고, 그 결과를 통해 어떻게 반환되는지 찾고자 하였다.
 
+https://jseobyun.tistory.com/562
+onnx 변환은 해주지만 NMS가 빠진상태로 변환하고 있는 상황이 딱 내 상황이었다.
+원래는 bounding box 정보와 class 별 confidence를 나타내는 N x (4+C) 형태여야하는데 (4 + C) x 8400같은 이상한 Dimension 결과가 나온다.ㄴ
