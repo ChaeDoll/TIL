@@ -23,3 +23,67 @@ onnx 변환은 해주지만 NMS가 빠진상태로 변환하고 있는 상황이
 우선 Transpose해주었다. 그리고 결과를 출력하니, 
 15.1, 3.81, 30.48, 7.73 그리고 80개의 0.000어쩌구...들이 나왔다. 이것은 4개의 xywh과 80개의 클래스에 대한 score라고 생각했다.
 
+따라서 코드를 작성했다.
+```
+ var result = outputTensor.ReadbackAndClone();
+        for (int i = 0; i < numDetections; i++)
+        {
+            int index = i * (4 + numClasses);
+            float x = result[index];
+            float y = result[index + 1];
+            float w = result[index + 2];
+            float h = result[index + 3];
+            float maxScore = 0f;
+            int classId = -1;
+            // Max Class Score 계산
+            for (int j = 0; j<numClasses; j++) 
+            {
+                float score = (result[index + 4 + j]);
+                if (score > maxScore)
+                {
+                    maxScore = score;
+                    classId = j;
+                }
+            }
+            // Threshold 반영
+            if (maxScore > threshold)
+            {
+                DetectionResult detection = new DetectionResult
+                {
+                    x = x,
+                    y = y,
+                    width = w,
+                    height = h,
+                    classId = classId,
+                    confidence = maxScore
+                };
+                results.Add(detection);
+            }
+        }
+        foreach (var item in results)
+        {
+            print("[" + item.x + ", " + item.y + ", " + item.width + ", " + item.height + ", " + item.classId + ", " + item.confidence + "]");
+        }
+```
+시그모이드도 정의해놨고, 
+```
+ private float Sigmoid(float value)
+    {
+        return 1f / (1f + Mathf.Exp(-value));
+    }
+
+```
+DetectionResult라는 Class도 만들어두었다.
+```
+public class DetectionResult
+{
+    public float x;
+    public float y;
+    public float width;
+    public float height;
+    public int classId;
+    public float confidence;
+}
+```
+
+Confidence? Score? 저 값이 너무 작아서일까 모르겠는데 너무 숫자가 작다. (0.00001보다 작은 수준) 그래서 출력값들을 정규화 해줘야할것같다.
