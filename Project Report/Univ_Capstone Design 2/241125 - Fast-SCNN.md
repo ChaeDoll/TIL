@@ -91,3 +91,6 @@ if __name__ == "__main__":
 커스텀 데이터셋을 가져와서 학습한다. 일단 한뭉치만 가져올까?
 
 직접 Pytorch 사용해서 모델 만들고, 데이터셋 넣어서 학습하고, 경량화해서 사용할란다.
+1024x1024로 입력하면 다운샘플링되며 128x128로 변환되는데, Classifier 이후 다시 업샘플링해서 1024x1024로 전달된다. 하지만 우리는 그냥 다운샘플링된 값을 그대로 활용한다. 
+`return F.interpolate(x, scale_factor=8, mode='bilinear', align_corners=False)`
+였던 코드를 `return x` 로 간단하게 변겨앟
