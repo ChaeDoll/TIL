@@ -14,3 +14,55 @@ ipynb를 통해 파이썬 환경에서도 onnx를 실행시켜봐도 동일한 �
 입력 데이터에서 Nomalize 하여 입력하고, 출력할 때 Softmax로 출력하고 있었다.
 그랬더니 ONNX 포맷을 사용해서도 제대로된 결과를 출력하는 것을 볼 수 있었다.
 이제 Unity 환경에서 C#을 활용해서 정규화와 Softmax를 구현해주어야한다.
+
+```csharp
+private void NomalizeTensor(TensorFloat inputTensor, int height, int width)
+{
+	// ImageNet 평균 및 표준편차 값 (RGB 순서)
+	float[] mean = { 0.485f, 0.456f, 0.406f };
+	float[] std = { 0.229f, 0.224f, 0.225f };
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int c = 0; c < 3; c++) // RGB 채널
+			{
+				int index = (c * height + y) * width + x;
+
+				// 값 가져오기, 정규화, 다시 저장
+				float value = inputTensor[index];
+				value = (value / 255.0f - mean[c]) / std[c];
+				inputTensor[index] = value;
+			}
+		}
+	}
+}
+
+    private void ApplySoftmax(TensorFloat inputTensor, int numClasses, int height, int width)
+    {
+        float[] logits = new float[numClasses];
+        for (int y=0; y < height; y++)
+        {
+            for (int x=0; x < width; x++)
+            {
+                // 1. 각 픽셀의 Logits 값 가져오기
+                for (int c=0; c < numClasses; c++)
+                {
+                    int index = (c * height + y) * width + x;
+                    logits[c] = inputTensor[index];
+                }
+
+                // 2. Softmax 계산
+                float[] probabilities = Softmax(logits);
+
+                for (int c=0; c < numClasses ; c++)
+                {
+                    int index = (c * height + y) * width + x;
+                    inputTensor[index] = probabilities[c];
+                }
+            }
+        }
+    }
+
+```
