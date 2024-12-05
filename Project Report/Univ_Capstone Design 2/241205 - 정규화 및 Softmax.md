@@ -39,30 +39,48 @@ private void NomalizeTensor(TensorFloat inputTensor, int height, int width)
 	}
 }
 
-    private void ApplySoftmax(TensorFloat inputTensor, int numClasses, int height, int width)
-    {
-        float[] logits = new float[numClasses];
-        for (int y=0; y < height; y++)
-        {
-            for (int x=0; x < width; x++)
-            {
-                // 1. 각 픽셀의 Logits 값 가져오기
-                for (int c=0; c < numClasses; c++)
-                {
-                    int index = (c * height + y) * width + x;
-                    logits[c] = inputTensor[index];
-                }
+private void ApplySoftmax(TensorFloat inputTensor, int numClasses, int height, int width)
+{
+	float[] logits = new float[numClasses];
+	for (int y=0; y < height; y++)
+	{
+		for (int x=0; x < width; x++)
+		{
+			// 1. 각 픽셀의 Logits 값 가져오기
+			for (int c=0; c < numClasses; c++)
+			{
+				int index = (c * height + y) * width + x;
+				logits[c] = inputTensor[index];
+			}
 
-                // 2. Softmax 계산
-                float[] probabilities = Softmax(logits);
+			// 2. Softmax 계산
+			float[] probabilities = Softmax(logits);
 
-                for (int c=0; c < numClasses ; c++)
-                {
-                    int index = (c * height + y) * width + x;
-                    inputTensor[index] = probabilities[c];
-                }
-            }
-        }
-    }
+			for (int c=0; c < numClasses ; c++)
+			{
+				int index = (c * height + y) * width + x;
+				inputTensor[index] = probabilities[c];
+			}
+		}
+	}
+}
 
+private float[] Softmax(float[] logits)
+{
+	float maxLogit = Mathf.Max(logits);
+	float[] exps = new float[logits.Length];
+	float sumExps = 0f;
+	for (int i = 0; i < logits.Length; i++)
+	{
+		exps[i] = Mathf.Exp(logits[i] - maxLogit);
+		sumExps += exps[i];
+	}
+	for (int i = 0; i < logits.Length; i++)
+	{
+		exps[i] /= sumExps;
+	}
+	return exps;
+}
 ```
+
+이처럼 1차원 배열로 입력되고 나오는 TensorFloat에 대해 입력 시 Normalize를 실행하고, 출력 시 Softmax를 실행하여 결과를 도출해내었다.
