@@ -28,12 +28,9 @@ private void NomalizeTensor(TensorFloat inputTensor, int height, int width)
 		{
 			for (int c = 0; c < 3; c++) // RGB 채널
 			{
-				int index = (c * height + y) * width + x;
-
-				// 값 가져오기, 정규화, 다시 저장
-				float value = inputTensor[index];
-				value = (value / 255.0f - mean[c]) / std[c];
-				inputTensor[index] = value;
+				float value = inputTensor[0, y, x, c];
+				value = (value / 255.0f - mean[c]) / std[c]; // 정규화
+				inputTensor[0, y, x, c] = value; // 정규화 값 다시 저장
 			}
 		}
 	}
@@ -84,3 +81,5 @@ private float[] Softmax(float[] logits)
 ```
 
 이처럼 1차원 배열로 입력되고 나오는 TensorFloat에 대해 입력 시 Normalize를 실행하고, 출력 시 Softmax를 실행하여 결과를 도출해내었다.
+
+처음에 Nomalize가 잘 안되는 문제가 있었는데, (normalize만 통과하면 Texture 색상이 적용되지 않는 문제가 발생함) 입력되는 inputTensor가 batch, channel, height, width 인줄알았는데, batch, height, width, channel 인가보다.
