@@ -31,3 +31,5 @@ PC 버전에 맞게 다시 Sentis 딥러닝을 돌릴 수 있는 코드를 작�
 2. Threshold 값 (0.4 ~ 0.6)
 3. Softmax **활성화** / 비활성화
 그런데 Softmax를 비활성화하면 배경이 안나타난다. 따라서 활성화하여 배경을 나타나게 해야한다.
+
+Cylinder Canvas를 했는데 평면과 굴곡면이 동시에 나타나는 문제가 발생. Canvas Renderer가 RawImage Object에도 들어있었음.
