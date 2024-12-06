@@ -3,4 +3,6 @@
 계속 VR 환경에서 고군분투하다가 너무 답답해서 디버깅이 가능한 PC로 넘어갔다. 
 PC 버전에 맞게 다시 Sentis 딥러닝을 돌릴 수 있는 코드를 작성하고, 화면에 Original 값과 Output 값을 동시에 출력하게 하였다.
 
-왜 inputTensor가 정규화가 안되는가, 왜 디버깅하기 위한 출력도 안되는가 이유를 찾아보니, InputTensor를 사용하기 위해서는 (Read) Download를 
+왜 inputTensor가 정규화가 안되는가, 왜 디버깅하기 위한 출력도 안되는가 이유를 찾아보니, InputTensor를 사용하기 위해서는 (Read) Download를 해야한다는 어이없는 결과를 얻었다.
+
+또 이것만이 ㅁ
