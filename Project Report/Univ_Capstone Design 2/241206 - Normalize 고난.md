@@ -18,4 +18,4 @@ PC 버전에 맞게 다시 Sentis 딥러닝을 돌릴 수 있는 코드를 작�
 
 ![[NormalizeSoftmax01.png]]정규화 O 소프트맥스 O
 
-메타퀘스트에 적용해보았다. 마찬가지로 Output Texture를 상하반전하고 출력한다.
+메타퀘스트에 적용해보았다. 마찬가지로 Output Texture를 상하반전하고 출력한다. threshold는 0.5로 하였다.
