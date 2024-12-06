@@ -21,3 +21,4 @@ PC 버전에 맞게 다시 Sentis 딥러닝을 돌릴 수 있는 코드를 작�
 메타퀘스트에 적용해보았다. 마찬가지로 Output Texture를 상하반전하고 출력한다. threshold는 0.5로 하였다.
 모델은 64, 128, 256 배치 중 256이 정확도가 가장 높아서 이를 선택하였다.
 
+촬영 전 Detection과 Segmentation의 Display를 Off시켰다가 촬영 후 다시 On 시키면 어떻게 될까?
